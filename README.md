@@ -261,17 +261,13 @@ Pendekatan ini mengasumsikan bahwa pengguna yang menyukai lagu dari seorang arti
 1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
 2. Keterbatasan dalam menangani variasi preferensi pengguna.
 
-2. Kelebihan:
+- Kelebihan:
+1. Mudah diimplementasikan.
+2. Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
 
-Mudah diimplementasikan.
-
-Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
-
-Kekurangan:
-
-Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
-
-Keterbatasan dalam menangani variasi preferensi pengguna.
+- Kekurangan:
+1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
+2. Keterbatasan dalam menangani variasi preferensi pengguna.
 
 2. Rekomendasi Berdasarkan Kemiripan Judul Lagu
 
@@ -347,8 +343,8 @@ Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman
 - Menghasilkan daftar lagu yang relevan dengan minat pengguna.
 - Menunjukkan fleksibilitas dalam metode rekomendasi, baik melalui model embedding maupun pendekatan berbasis TF-IDF dan cosine similarity.
 - Namun, terdapat beberapa area yang dapat ditingkatkan, seperti:
- a. Penyesuaian bobot dalam model embedding untuk meningkatkan akurasi prediksi.
-  b. Penyempurnaan pre-processing data agar model dapat menangani berbagai format penulisan nama artis dengan lebih baik.
+    1. Penyesuaian bobot dalam model embedding untuk meningkatkan akurasi prediksi.
+    2. Penyempurnaan pre-processing data agar model dapat menangani berbagai format penulisan nama artis dengan lebih baik.
 
 3. Apakah setiap solusi statement yang direncanakan berdampak?
 - Model yang dikembangkan telah memberikan dampak positif dalam meningkatkan pengalaman pengguna dengan cara:
@@ -356,5 +352,5 @@ Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman
 - Meningkatkan eksplorasi musik dengan memberikan rekomendasi yang lebih luas dan beragam.
 - Mempermudah pengguna dalam menemukan lagu berdasarkan artis yang disukai.
 - Namun, terdapat beberapa kendala yang perlu diperhatikan:
-  a. Keakuratan rekomendasi masih dapat ditingkatkan dengan mempertimbangkan lebih banyak fitur dalam model.
-  b. Model perlu diuji lebih lanjut dengan dataset yang lebih besar untuk memastikan kinerja yang optimal dalam skala yang lebih luas.
+  1. Keakuratan rekomendasi masih dapat ditingkatkan dengan mempertimbangkan lebih banyak fitur dalam model.
+  2. Model perlu diuji lebih lanjut dengan dataset yang lebih besar untuk memastikan kinerja yang optimal dalam skala yang lebih luas.
