@@ -1,5 +1,4 @@
 # Laporan Proyek Machine Learning - Ika Widiyanti
-Membuat sistem Rekomendasi Lagu
 
 # Project Overview
 
@@ -55,7 +54,7 @@ https://santika.upnjatim.ac.id/submissions/index.php/santika/article/view/201/96
 2. Rekomendasi Berdasarkan Kesamaan Judul Lagu:
 - Menerapkan teknik TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengukur kesamaan antarjudul lagu.
 - Menghitung cosine similarity antara judul lagu untuk memberikan rekomendasi yang lebih kontekstual.
-- 
+  
 3. Rekomendasi Berdasarkan Model Embedding:
 - Menggunakan model RecommenderNet untuk menghasilkan embedding lagu dan mengidentifikasi keterkaitan antar lagu.
 - Menghasilkan daftar 10 lagu teratas yang paling relevan untuk direkomendasikan kepada pengguna berdasarkan pola keterkaitan dalam dataset lagu.
@@ -141,7 +140,7 @@ Dataset ini berisi informasi tentang lagu, artis, genre, dan berbagai fitur musi
 
 1. Membaca Data
 
-Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yaitu:
+- Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yaitu:
 - data.csv sebagai dataset utama yang berisi informasi lagu.
 - data_by_genres.csv sebagai dataset yang mengelompokkan lagu berdasarkan genre.
   
