@@ -261,14 +261,6 @@ Pendekatan ini mengasumsikan bahwa pengguna yang menyukai lagu dari seorang arti
 1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
 2. Keterbatasan dalam menangani variasi preferensi pengguna.
 
-- Kelebihan:
-1. Mudah diimplementasikan.
-2. Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
-
-- Kekurangan:
-1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
-2. Keterbatasan dalam menangani variasi preferensi pengguna.
-
 2. Rekomendasi Berdasarkan Kemiripan Judul Lagu
 
 Metode ini menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengubah teks dari judul lagu dan nama artis menjadi representasi numerik, kemudian menghitung kemiripan antara lagu menggunakan cosine similarity. Cara kerja metode ini:
