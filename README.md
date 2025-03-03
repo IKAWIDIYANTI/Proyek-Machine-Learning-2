@@ -67,19 +67,6 @@ https://santika.upnjatim.ac.id/submissions/index.php/santika/article/view/201/96
 - Digunakan untuk mengukur sejauh mana prediksi model mendekati rating aktual yang diberikan oleh pengguna.
 - Nilai RMSE yang lebih rendah menunjukkan akurasi prediksi yang lebih baik.
 
-2. Precision@K:
-- Mengukur proporsi rekomendasi yang diberikan dalam top-K yang relevan dengan preferensi pengguna.
-  
-3. Recall@K:
-- Mengukur sejauh mana sistem mampu merekomendasikan lagu-lagu yang relevan dibandingkan dengan seluruh lagu yang seharusnya direkomendasikan.
-
-4. F1-Score:
-- Merupakan harmonic mean dari precision dan recall untuk mengevaluasi keseimbangan antara kedua metrik tersebut.
-
-5. User Satisfaction:
-- Mengukur tingkat kepuasan pengguna secara subjektif melalui survei atau feedback langsung.
-- Digunakan untuk memahami seberapa baik sistem rekomendasi memenuhi ekspektasi pengguna dalam menemukan lagu-lagu baru yang sesuai dengan preferensi mereka.
-
 # Data Understanding
 
 Dataset yang digunakan dalam analisis ini merupakan meta-data dari lagu dan artis pada platform Spotify. Dataset ini diperoleh dari Kaggle melalui tautan berikut: 
@@ -90,60 +77,113 @@ Dataset ini berisi informasi tentang lagu, artis, genre, dan berbagai fitur musi
 
 # Struktur Dataset
 
-  Dataset ini terdiri dari beberapa file dengan cakupan informasi yang berbeda, yaitu:
+Dataset terdiri dari beberapa file, masing-masing berisi jenis informasi yang berbeda:
 
-1. data.csvFile ini berisi informasi tentang lagu, artis, serta berbagai fitur musik yang dapat digunakan untuk rekomendasi berdasarkan kesamaan fitur musik. Informasi yang tersedia dalam file ini mencakup metadata lagu dan atribut musik seperti tempo, energy, danceability, serta acousticness.
+1. data.csv
+- Berisi informasi tingkat lagu, termasuk metadata dan atribut musik seperti tempo, energy, danceability, dan acousticness.
+- Berguna untuk rekomendasi lagu berdasarkan kesamaan fitur musik.
 
-2. data_by_artist.csvBerisi data yang telah diagregasi berdasarkan artis. File ini dapat digunakan untuk rekomendasi artis serupa berdasarkan karakteristik musik yang mereka hasilkan.
+2. data_by_artist.csv
+- Data yang diagregasi berdasarkan artis.
+- Cocok untuk merekomendasikan artis serupa berdasarkan karakteristik musik mereka.
 
-3. data_by_genres.csvBerisi informasi tentang lagu yang dikelompokkan berdasarkan genre. File ini dapat digunakan untuk analisis tambahan yang berkaitan dengan genre musik, namun tidak digunakan langsung untuk rekomendasi lagu atau artis.
+3. data_by_genres.csv
+- Berisi data lagu yang dikelompokkan berdasarkan genre.
+- Berguna untuk analisis spesifik genre tetapi tidak langsung untuk rekomendasi lagu atau artis.
 
-4. data_by_year.csvMenyediakan informasi mengenai tren musik berdasarkan tahun. File ini berguna untuk analisis tren musik dari waktu ke waktu, misalnya untuk melihat perubahan preferensi genre atau evolusi karakteristik musik berdasarkan periode tertentu.
+4. data_by_year.csv
+- Menyediakan informasi tentang tren musik berdasarkan tahun.
+- Berguna untuk menganalisis perubahan preferensi atau karakteristik musik dari waktu ke waktu.
 
-5. data_w_genres.csvFile ini menghubungkan lagu dengan genre spesifik yang dimilikinya. Informasi dalam file ini dapat digunakan untuk eksplorasi lebih lanjut mengenai distribusi genre dalam koleksi lagu.
+5. data_w_genres.csv
+- Menghubungkan lagu dengan genre spesifik.
+- Memungkinkan eksplorasi distribusi genre dalam koleksi lagu.
 
-# Variabel dalam Dataset
+# Variabel Utama dalam Dataset
 
-  Beberapa variabel utama yang terdapat dalam dataset ini meliputi:
+Dataset mencakup variabel-variabel utama berikut:
 
-- track_name : Nama lagu.
-- artist_name : Nama artis yang membawakan lagu.
-- genre : Genre dari lagu.
-- year : Tahun rilis lagu.
-- tempo : Kecepatan lagu dalam beats per minute (BPM).
-- energy : Tingkat energi lagu, dengan nilai antara 0 hingga 1.
-- danceability : Indikator seberapa cocok lagu untuk menari, dengan nilai antara 0 hingga 1.
-- acousticness : Indikator seberapa akustik lagu tersebut, dengan nilai antara 0 hingga 1.
-- popularity : Skor popularitas lagu di Spotify.
+- track_name: Nama lagu.
+- artist_name: Nama artis yang membawakan lagu.
+- genre: Genre lagu.
+- year: Tahun rilis lagu.
+- tempo: Kecepatan lagu dalam ketukan per menit (BPM).
+- energy: Tingkat energi lagu, berkisar antara 0 hingga 1.
+- danceability: Indikator seberapa cocok lagu untuk menari, berkisar antara 0 hingga 1.
+- acousticness: Indikator seberapa akustik lagu tersebut, berkisar antara 0 hingga 1.
+- popularity: Skor popularitas lagu di Spotify.
 
-# Exploratory Data Analysis
+# Analisis Dataset
 
-  Untuk memahami lebih lanjut mengenai dataset, beberapa tahapan eksplorasi data dilakukan:
+1. data.csv
+- Bentuk: 170.653 baris dan 19 kolom.
+- Missing Values: Tidak ada missing value yang terdeteksi.
+- Duplikat: Tidak ada duplikat yang terdeteksi.
+- Outlier: Tidak diperiksa secara eksplisit, tetapi analisis lebih lanjut mungkin diperlukan.
+- Insight Utama:
+  1. Lagu unik: 170.653.
+  2. Lagu paling populer: "Dakiti" dengan skor popularitas 100.
+  3. Contoh lagu: "Piano Concerto No. 3 in D Minor, Op. 30: III. Finale. Alla breve".
 
-- Struktur Data: Melihat informasi dasar dataset menggunakan data.info() untuk mengetahui jumlah entri, tipe data, dan apakah terdapat nilai yang hilang.
-- Jumlah Lagu Unik: Menghitung jumlah lagu unik dalam dataset dengan len(data["id"].unique()).
-- Nama Lagu Pertama: Mengambil nama lagu pertama dalam dataset menggunakan data["name"].iloc[0].
-- Popularitas Lagu: Mengurutkan lagu berdasarkan tingkat popularitas dan menampilkan lima lagu teratas dengan data[["name", "popularity"]].sort_values(by="popularity", ascending=False).head().
-- Informasi Genre: Mengeksplorasi data berdasarkan genre dengan data_by_genres.info(), serta menghitung jumlah genre unik menggunakan len(data_by_genres["genres"].unique()).
-- Daftar Genre: Menampilkan sepuluh genre pertama dalam dataset dengan data_by_genres["genres"].unique()[:10].
-- Jumlah Artis Unik: Menghitung jumlah artis unik dalam dataset data_by_artist menggunakan len(data_by_artist["artists"].unique()).
-- Dimensi Data Artis: Mengecek bentuk dataset artis dengan data_by_artist.shape dan menampilkan lima entri pertama menggunakan data_by_artist.head().
-- Deskripsi Data Berdasarkan Tahun: Menggunakan data_by_year.describe() untuk melihat statistik dasar data yang dikelompokkan berdasarkan tahun.
-- Jumlah Artis dengan Genre: Menghitung jumlah artis yang memiliki informasi genre dalam dataset data_w_genres menggunakan len(data_w_genres.artists.unique()).
-- Jumlah Genre Unik: Menghitung jumlah genre unik dalam dataset data_w_genres dengan len(data_w_genres.genres.unique()).
-- Tampilan Data Awal: Menampilkan lima baris pertama dari dataset data_w_genres menggunakan data_w_genres.head().
-- Tahapan eksplorasi ini bertujuan untuk memahami karakteristik dataset, menemukan pola awal, serta menentukan langkah selanjutnya dalam analisis yang akan dilakukan.
+2. data_by_artist.csv
+- Bentuk: 28.680 baris dan 14 kolom.
+- Missing Values: Tidak ada missing value yang terdeteksi.
+- Duplikat: Tidak ada duplikat yang terdeteksi.
+- Insight Utama:
+  1. Artis unik: 28.680.
+
+3. data_by_genres.csv
+- Bentuk: 2.973 baris dan 14 kolom.
+- Missing Values: Tidak ada missing value yang terdeteksi.
+- Duplikat: Tidak ada duplikat yang terdeteksi.
+- Insight Utama:
+  1. Genre unik: 2.973.
+  2. Contoh genre: "21st century classical", "432hz", "8-bit".
+
+4. data_by_year.csv
+- Bentuk: 100 baris dan 14 kolom.
+- Missing Values: Tidak ada missing value yang terdeteksi.
+- Duplikat: Tidak ada duplikat yang terdeteksi.
+- Insight Utama:
+  1. Mencakup 100 tahun tren musik.
+
+5. data_w_genres.csv
+- Bentuk: 28.680 baris dan 14 kolom.
+- Missing Values: Tidak ada missing value yang terdeteksi.
+- Duplikat: Tidak ada duplikat yang terdeteksi.
+- Insight Utama:
+  1. Artis unik dengan genre: 28.680.
+  2. Genre unik: 10.743.
+
+# Analisis Gabungan Dataset
+
+- Total Lagu Unik: 213.048 (berdasarkan ID unik).
+- Total Artis/Genre Unik: 65.741.
+- Dataset yang Digabungkan: Menggabungkan semua dataset tidak menghasilkan missing value, menunjukkan data yang bersih dan konsisten.
+
+# Deskripsi Fitur
+
+Dataset mencakup fitur-fitur berikut:
+
+1. Fitur Numerik:
+- valence, acousticness, danceability, energy, instrumentalness, liveness, loudness, speechiness, tempo, popularity.
+
+2. Fitur Kategorikal:
+- track_name, artist_name, genre, id, release_date.
+
+3. Fitur Temporal:
+- year.
+
 
 # Data Preparation
 
-  Data preparation merupakan proses penting dalam analisis data untuk memastikan data yang digunakan dalam model atau visualisasi memiliki kualitas yang baik. Tahapan yang dilakukan dalam proses ini meliputi:
+Data preparation merupakan proses krusial dalam analisis data untuk memastikan kualitas data yang digunakan dalam model atau visualisasi. Berikut adalah tahapan lengkap yang dilakukan dalam proses ini:
 
 1. Membaca Data
-
 - Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yaitu:
 - data.csv sebagai dataset utama yang berisi informasi lagu.
 - data_by_genres.csv sebagai dataset yang mengelompokkan lagu berdasarkan genre.
-  
+
 2. Pemeriksaan Missing Values
 - Pemeriksaan nilai yang hilang dilakukan dengan data.isnull().sum(). Langkah ini penting untuk mengetahui apakah terdapat data yang tidak lengkap, yang dapat memengaruhi analisis.
 
@@ -173,71 +213,92 @@ Dataset ini berisi informasi tentang lagu, artis, genre, dan berbagai fitur musi
 
 11. Membuat DataFrame Baru
 - Data yang telah dibersihkan disusun ulang menjadi DataFrame baru yang hanya berisi kolom yang relevan:
-  1. id (ID lagu)
-  2. song_name (Nama lagu)
-  3. artists (Nama artis)
+- id (ID lagu)
+- song_name (Nama lagu)
+- artists (Nama artis)
 - DataFrame baru dibuat menggunakan pd.DataFrame() dan memastikan hanya lagu unik yang dimasukkan ke dalam dataset yang telah dibersihkan.
 
 12. Menampilkan Data Awal
 - Lima baris pertama dari dataset hasil akhir ditampilkan dengan songs_new.head(). Hal ini dilakukan untuk memastikan bahwa proses pembersihan dan pemrosesan data telah berjalan dengan benar sebelum data digunakan lebih lanjut.
 
+13. Merge Data
+- Dataset data dan data_by_genres digabungkan berdasarkan kolom id menggunakan pd.merge(). Langkah ini dilakukan untuk menggabungkan informasi lagu dengan informasi genre.
+
+14. Ekstraksi Fitur dengan TF-IDF
+- Ekstraksi fitur dengan TF-IDF (Term Frequency-Inverse Document Frequency) dilakukan untuk mengukur pentingnya sebuah kata (dalam hal ini, nama artis) dalam konteks dataset lagu. Proses ini dimulai dengan inisialisasi TfidfVectorizer dan fitting terhadap kolom artists.
+- Matriks TF-IDF kemudian dihasilkan dengan mentransformasikan data menggunakan tf.fit_transform(data['artists']).
+- Hasil matriks TF-IDF ditampilkan dalam bentuk DataFrame untuk memudahkan interpretasi.
+
+
 # Modeling
 
-  Tahapan ini membahas sistem rekomendasi yang dikembangkan untuk memberikan rekomendasi lagu berdasarkan kesamaan artis dan kesamaan judul lagu menggunakan pendekatan berbasis TF-IDF (Term Frequency-Inverse Document Frequency) serta cosine similarity.
+Sistem rekomendasi yang dikembangkan bertujuan untuk memberikan rekomendasi lagu berdasarkan kemiripan artis dan kesamaan fitur teks menggunakan metode berbasis konten (Content-Based Filtering). Dua pendekatan utama yang digunakan adalah rekomendasi berbasis artis dan rekomendasi berbasis kemiripan judul lagu menggunakan TF-IDF dan cosine similarity.
 
-# Rekomendasi Lagu Berdasarkan Kesamaan Artis
+1. Rekomendasi Berdasarkan Artis
 
-Pendekatan pertama yang digunakan adalah merekomendasikan lagu berdasarkan kesamaan artis. Model ini bekerja dengan mencari lagu-lagu yang dinyanyikan oleh artis yang sama dengan lagu target.
+Pendekatan ini mengasumsikan bahwa pengguna yang menyukai lagu dari seorang artis tertentu kemungkinan besar juga akan menyukai lagu-lagu lain dari artis yang sama. Model ini bekerja dengan cara:
 
-- Langkah-langkah Implementasi:
-1. Preprocessing Data: Data lagu yang tersedia terdiri dari kolom song_name dan artists, di mana artists berupa daftar nama artis.
-2. TF-IDF Vectorization: Menggunakan TfidfVectorizer untuk mengekstrak fitur dari nama artis.
-3. Filtering Lagu dengan Artis yang Sama: Jika sebuah lagu dipilih, maka sistem akan mencari lagu lain yang dinyanyikan oleh artis yang sama.
-4. Menyaring Lagu yang Sama: Lagu yang sama dengan lagu input akan dihapus dari hasil rekomendasi.
-5. Menampilkan Hasil: Sistem menampilkan sejumlah lagu yang dinyanyikan oleh artis yang sama.
+- Mengidentifikasi artis dari lagu yang diberikan sebagai input.
+- Mencari lagu-lagu lain yang dinyanyikan oleh artis yang sama.
+- Menyaring lagu agar tidak merekomendasikan lagu yang sama dengan input.
+- Menghasilkan Top-N rekomendasi berdasarkan hasil pencarian.
+- Berikut adalah hasil rekomendasi untuk lagu Rockin' Chair - Live:
 
-- Kelebihan:
-1. Sangat efektif untuk memberikan rekomendasi lagu dari artis yang disukai oleh pengguna.
-2. Mudah diimplementasikan tanpa memerlukan perhitungan kompleks.
 
-- Kekurangan:
-1. Tidak mempertimbangkan kesamaan antar lagu berdasarkan karakteristik lain seperti genre atau lirik.
-2. Jika seorang artis hanya memiliki sedikit lagu dalam dataset, rekomendasi yang diberikan akan terbatas.
 
-# Rekomendasi Lagu Berdasarkan Kesamaan Judul
+![Screenshot 2025-03-04 020607](https://github.com/user-attachments/assets/4a0a47f8-386d-45c9-ba5b-c47f644f90b6)
 
-Pendekatan kedua adalah merekomendasikan lagu berdasarkan kesamaan judul lagu menggunakan TF-IDF dan cosine similarity.
 
-- Langkah-langkah Implementasi:
-1. Preprocessing Data: Dataset diproses dengan menggabungkan informasi song_name dan artists menjadi satu teks untuk mendapatkan representasi yang lebih baik.
-2. TF-IDF Vectorization: TfidfVectorizer digunakan untuk mengonversi teks ke dalam bentuk vektor numerik dengan menghilangkan kata-kata umum (stop words).
-3. Menghitung Cosine Similarity: Cosine similarity digunakan untuk mengukur tingkat kemiripan antara lagu yang dipilih dengan lagu-lagu lain berdasarkan representasi TF-IDF.
-4. Sorting dan Seleksi Hasil: Lagu-lagu dengan skor kemiripan tertinggi dipilih sebagai rekomendasi.
+
+
+
 
 - Kelebihan:
-1. Mampu memberikan rekomendasi berdasarkan kemiripan judul lagu, yang dapat mencerminkan gaya musik atau tema tertentu.
-2. Dapat digunakan untuk menemukan lagu dengan nama yang mirip namun dari artis berbeda.
+1. Mudah diimplementasikan.
+2. Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
 
 - Kekurangan:
-1. Jika nama lagu terlalu umum, hasil rekomendasi mungkin kurang relevan.
-2. Tidak mempertimbangkan faktor lain seperti popularitas lagu atau genre.
+1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
+2. Keterbatasan dalam menangani variasi preferensi pengguna.
 
-# Rekomendasi Lagu Berdasarkan Kombinasi Judul dan Artis
+2. Kelebihan:
 
-Pendekatan terakhir mengombinasikan informasi judul lagu dan nama artis dalam satu representasi teks untuk meningkatkan akurasi rekomendasi.
+Mudah diimplementasikan.
 
-- Langkah-langkah Implementasi:
-1. Menggabungkan Judul dan Artis: Kolom song_name dan artists digabungkan menjadi satu string.
-2. TF-IDF Vectorization: TfidfVectorizer diterapkan pada kolom gabungan untuk membangun representasi vektor yang lebih kaya.
-3. Cosine Similarity: Digunakan untuk mengukur tingkat kemiripan antara lagu berdasarkan kombinasi judul dan artis.
-4. Sorting dan Seleksi Hasil: Lagu dengan skor kemiripan tertinggi ditampilkan sebagai rekomendasi.
+Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
+
+Kekurangan:
+
+Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
+
+Keterbatasan dalam menangani variasi preferensi pengguna.
+
+2. Rekomendasi Berdasarkan Kemiripan Judul Lagu
+
+Metode ini menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengubah teks dari judul lagu dan nama artis menjadi representasi numerik, kemudian menghitung kemiripan antara lagu menggunakan cosine similarity. Cara kerja metode ini:
+
+- Menggabungkan nama lagu dan artis sebagai representasi teks.
+- Menggunakan TF-IDF untuk mengubah teks menjadi vektor fitur.
+- Menghitung kemiripan kosinus antara lagu yang dicari dengan seluruh lagu dalam dataset.
+- Mengurutkan dan memilih Top-N lagu dengan skor kemiripan tertinggi.
+- Hasil rekomendasi untuk lagu Song for Zula:
+
+
+
+
+![Screenshot 2025-03-04 020619](https://github.com/user-attachments/assets/21890856-76f9-49e1-bb15-a314dbea219a)
+
+
+
+
 
 - Kelebihan:
-- Menghasilkan rekomendasi yang lebih kontekstual dengan mempertimbangkan baik judul maupun artis.
-- Lebih fleksibel dibandingkan dengan hanya menggunakan judul atau artis saja.
+1. Dapat merekomendasikan lagu dari artis yang berbeda tetapi memiliki kesamaan dalam judul lagu.
+2. Lebih fleksibel dibandingkan metode berbasis artis karena mempertimbangkan kesamaan teks.
 
 - Kekurangan:
-1. Masih bergantung pada pemrosesan teks, sehingga tidak mempertimbangkan elemen lain seperti tempo atau genre secara langsung.
+1. Bisa menghasilkan rekomendasi yang tidak sepenuhnya relevan jika hanya berdasarkan kemiripan teks.
+2. Tidak memperhitungkan faktor lain seperti genre atau popularitas lagu.
 
 # Evaluation
 
@@ -266,3 +327,34 @@ Pendekatan terakhir mengombinasikan informasi judul lagu dan nama artis dalam sa
 ![Screenshot 2025-03-03 170745](https://github.com/user-attachments/assets/e38b06b8-a27b-4f72-a0ed-c8086e3bcb95)
 
 
+
+
+
+# Dampak Model Terhadap Business Understanding
+
+Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman pengguna dengan memberikan rekomendasi lagu yang relevan. Evaluasi dilakukan untuk mengukur sejauh mana model ini menjawab permasalahan bisnis dan mencapai tujuan yang telah ditetapkan.
+
+1. Apakah model telah menjawab setiap problem statement?
+- Model yang dikembangkan telah dirancang untuk memberikan rekomendasi lagu berdasarkan beberapa pendekatan, seperti:
+- Rekomendasi berdasarkan kesamaan artis
+- Rekomendasi berdasarkan kemiripan judul lagu
+- Rekomendasi berdasarkan kombinasi judul lagu dan artis
+- Dengan pendekatan ini, model telah mampu memberikan rekomendasi yang sesuai dengan preferensi pengguna, menjawab problem statement terkait pencarian lagu yang relevan dan meningkatkan pengalaman mendengarkan musik.
+
+2. Apakah model berhasil mencapai setiap goals yang diharapkan?
+- Model telah mencapai tujuan utama, yaitu meningkatkan keterlibatan pengguna dengan menyediakan rekomendasi yang lebih personal dan relevan. Berdasarkan hasil prediksi, model mampu:
+- Memberikan rekomendasi yang bervariasi, mencakup berbagai genre dan artis.
+- Menghasilkan daftar lagu yang relevan dengan minat pengguna.
+- Menunjukkan fleksibilitas dalam metode rekomendasi, baik melalui model embedding maupun pendekatan berbasis TF-IDF dan cosine similarity.
+- Namun, terdapat beberapa area yang dapat ditingkatkan, seperti:
+ a. Penyesuaian bobot dalam model embedding untuk meningkatkan akurasi prediksi.
+  b. Penyempurnaan pre-processing data agar model dapat menangani berbagai format penulisan nama artis dengan lebih baik.
+
+3. Apakah setiap solusi statement yang direncanakan berdampak?
+- Model yang dikembangkan telah memberikan dampak positif dalam meningkatkan pengalaman pengguna dengan cara:
+- Mempercepat pencarian lagu yang sesuai dengan preferensi pengguna.
+- Meningkatkan eksplorasi musik dengan memberikan rekomendasi yang lebih luas dan beragam.
+- Mempermudah pengguna dalam menemukan lagu berdasarkan artis yang disukai.
+- Namun, terdapat beberapa kendala yang perlu diperhatikan:
+  a. Keakuratan rekomendasi masih dapat ditingkatkan dengan mempertimbangkan lebih banyak fitur dalam model.
+  b. Model perlu diuji lebih lanjut dengan dataset yang lebih besar untuk memastikan kinerja yang optimal dalam skala yang lebih luas.
