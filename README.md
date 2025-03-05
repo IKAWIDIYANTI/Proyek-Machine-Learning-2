@@ -180,51 +180,38 @@ Dataset mencakup fitur-fitur berikut:
 Data preparation merupakan proses krusial dalam analisis data untuk memastikan kualitas data yang digunakan dalam model atau visualisasi. Berikut adalah tahapan lengkap yang dilakukan dalam proses ini:
 
 1. Membaca Data
-- Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yaitu:
+- Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yang meliputi:
 - data.csv sebagai dataset utama yang berisi informasi lagu.
 - data_by_genres.csv sebagai dataset yang mengelompokkan lagu berdasarkan genre.
 
-2. Pemeriksaan Missing Values
-- Pemeriksaan nilai yang hilang dilakukan dengan data.isnull().sum(). Langkah ini penting untuk mengetahui apakah terdapat data yang tidak lengkap, yang dapat memengaruhi analisis.
+2. Menangani Missing Values
+- Data yang memiliki nilai kosong dihapus menggunakan data.dropna().
+- Penghapusan dilakukan untuk memastikan hanya data yang lengkap yang digunakan dalam analisis.
 
-3. Menghapus Missing Values
-- Data yang memiliki nilai kosong dihapus menggunakan data.dropna(). Penghapusan dilakukan untuk memastikan bahwa hanya data yang lengkap yang digunakan dalam analisis.
+3. Mengurutkan Data
+- Data diurutkan berdasarkan kolom id dalam urutan menaik menggunakan sort_values('id', ascending=True).
+- Hal ini dilakukan untuk menjaga struktur data yang lebih terorganisir.
 
-4. Mengurutkan Data
-- Data yang telah dibersihkan kemudian diurutkan berdasarkan kolom id dalam urutan menaik menggunakan sort_values('id', ascending=True). Langkah ini bertujuan untuk memastikan bahwa data memiliki urutan yang terstruktur.
+4. Menghapus Duplikasi Data
+- Lagu dengan id yang sama dihapus menggunakan fix_songs.drop_duplicates('id').
+- Tujuan dari langkah ini adalah memastikan bahwa setiap lagu hanya muncul sekali dalam dataset.
 
-5. Memeriksa Jumlah Lagu Unik
-- Jumlah lagu unik dihitung dengan len(fix_songs['id'].unique()). Hal ini dilakukan untuk mengetahui jumlah lagu yang benar-benar berbeda dalam dataset.
+5. Mengganti Nama Genre yang Tidak Konsisten
+- Genre yang kurang spesifik atau tidak relevan disesuaikan menggunakan data_by_genres.replace('game', 'electronic').
+- Hal ini dilakukan agar penamaan genre dalam dataset lebih konsisten.
 
-6. Menampilkan Daftar Genre Unik
-- Seluruh genre unik dalam dataset ditampilkan menggunakan data_by_genres['genres'].unique(). Langkah ini penting untuk memahami variasi genre dalam dataset.
-
-7. Memfilter Lagu Berdasarkan Genre
-- Lagu dengan genre tertentu, misalnya pop, difilter menggunakan data_by_genres[data_by_genres['genres'] == 'pop']. Langkah ini memungkinkan analisis lebih lanjut terhadap lagu dalam genre tertentu.
-
-8. Memfilter Lagu Berdasarkan Artis
-- Lagu-lagu yang dinyanyikan oleh artis tertentu, seperti Ed Sheeran, diidentifikasi menggunakan fix_songs[fix_songs['artists'].str.contains('Ed Sheeran', na=False)]. Langkah ini bermanfaat untuk melihat distribusi lagu berdasarkan artis tertentu.
-
-9. Mengganti Nama Genre yang Tidak Konsisten
-- Beberapa genre yang kurang spesifik atau kurang relevan diperbaiki dengan mengganti genre game menjadi electronic menggunakan data_by_genres.replace('game', 'electronic'). Hal ini dilakukan untuk memastikan konsistensi dalam penamaan genre.
-
-10. Menghapus Duplikasi Data
-- Lagu dengan id yang sama dihapus menggunakan fix_songs.drop_duplicates('id'). Tujuannya adalah untuk memastikan bahwa setiap lagu hanya muncul sekali dalam dataset agar tidak terjadi duplikasi dalam analisis.
-
-11. Membuat DataFrame Baru
+6. Membuat DataFrame Baru
 - Data yang telah dibersihkan disusun ulang menjadi DataFrame baru yang hanya berisi kolom yang relevan:
-- id (ID lagu)
-- song_name (Nama lagu)
-- artists (Nama artis)
-- DataFrame baru dibuat menggunakan pd.DataFrame() dan memastikan hanya lagu unik yang dimasukkan ke dalam dataset yang telah dibersihkan.
+    1. id (ID lagu)
+    2. song_name (Nama lagu)
+    3. artists (Nama artis)
+- DataFrame ini dibuat menggunakan pd.DataFrame() dengan memastikan hanya lagu unik yang digunakan.
 
-12. Menampilkan Data Awal
-- Lima baris pertama dari dataset hasil akhir ditampilkan dengan songs_new.head(). Hal ini dilakukan untuk memastikan bahwa proses pembersihan dan pemrosesan data telah berjalan dengan benar sebelum data digunakan lebih lanjut.
+7. Menggabungkan Data
+- Dataset data dan data_by_genres digabungkan berdasarkan kolom id menggunakan pd.merge().
+- Penggabungan ini dilakukan untuk mengaitkan informasi lagu dengan informasi genre.
 
-13. Merge Data
-- Dataset data dan data_by_genres digabungkan berdasarkan kolom id menggunakan pd.merge(). Langkah ini dilakukan untuk menggabungkan informasi lagu dengan informasi genre.
-
-14. Ekstraksi Fitur dengan TF-IDF
+8. Ekstraksi Fitur dengan TF-IDF
 - Ekstraksi fitur dengan TF-IDF (Term Frequency-Inverse Document Frequency) dilakukan untuk mengukur pentingnya sebuah kata (dalam hal ini, nama artis) dalam konteks dataset lagu. Proses ini dimulai dengan inisialisasi TfidfVectorizer dan fitting terhadap kolom artists.
 - Matriks TF-IDF kemudian dihasilkan dengan mentransformasikan data menggunakan tf.fit_transform(data['artists']).
 - Hasil matriks TF-IDF ditampilkan dalam bentuk DataFrame untuk memudahkan interpretasi.
