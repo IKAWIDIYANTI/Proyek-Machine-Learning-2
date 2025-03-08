@@ -61,11 +61,19 @@ https://santika.upnjatim.ac.id/submissions/index.php/santika/article/view/201/96
 
 # Evaluation Metrics
 
-  Untuk mengukur kinerja sistem rekomendasi, beberapa metrik evaluasi akan digunakan:
+  Untuk mengukur kinerja sistem rekomendasi, digunakan beberapa metrik evaluasi berikut:
 
-1. Root Mean Squared Error (RMSE):
-- Digunakan untuk mengukur sejauh mana prediksi model mendekati rating aktual yang diberikan oleh pengguna.
-- Nilai RMSE yang lebih rendah menunjukkan akurasi prediksi yang lebih baik.
+1. Accuracy
+- Model dievaluasi berdasarkan akurasi prediksi terhadap data uji. Akurasi mengukur seberapa banyak prediksi yang benar dibandingkan dengan total prediksi yang dibuat.
+
+2. Precision
+- Precision digunakan untuk mengukur seberapa banyak item yang direkomendasikan benar-benar relevan. Precision dihitung sebagai rasio antara jumlah prediksi positif yang benar dengan total prediksi positif yang dibuat oleh model.
+
+3. Recall
+- Recall mengukur seberapa banyak item yang relevan berhasil ditemukan oleh model dari seluruh item yang seharusnya direkomendasikan.
+
+4. Loss Function (Binary Crossentropy)
+- Model menggunakan binary crossentropy sebagai fungsi loss karena sistem rekomendasi ini mengubah nilai popularity menjadi kategori biner (populer atau tidak populer). Loss function ini mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar.
 
 # Data Understanding
 
@@ -279,27 +287,57 @@ Metode ini menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk 
 
 # Metrik Evaluasi
 
-  Model rekomendasi lagu ini dievaluasi menggunakan dua metrik utama, yaitu Binary Crossentropy Loss dan Root Mean Squared Error (RMSE). Kedua metrik ini digunakan untuk mengukur performa model dalam memprediksi relevansi antara pengguna dan lagu yang direkomendasikan.
+  Untuk mengukur kinerja sistem rekomendasi, digunakan beberapa metrik evaluasi berikut:
 
-1. Binary Crossentropy Loss
-- Binary Crossentropy (BCE) digunakan sebagai fungsi loss karena sistem rekomendasi ini diformulasikan sebagai masalah klasifikasi biner, di mana model memprediksi probabilitas bahwa pengguna akan menyukai lagu tertentu.
-- Semakin rendah nilai loss, semakin baik model dalam memprediksi relevansi lagu.
+1. Accuracy
+- Model dievaluasi berdasarkan akurasi prediksi terhadap data uji. Akurasi mengukur seberapa banyak prediksi yang benar dibandingkan dengan total prediksi yang dibuat.
 
-2. Root Mean Squared Error (RMSE)
-- RMSE digunakan untuk mengukur tingkat kesalahan model dalam melakukan prediksi skor rekomendasi.
-- Semakin rendah nilai loss, semakin baik model dalam memprediksi relevansi lagu.
-- RMSE memberikan gambaran seberapa jauh prediksi model dari nilai sebenarnya. Nilai yang lebih rendah menunjukkan performa model yang lebih baik.
+2. Precision
+- Precision digunakan untuk mengukur seberapa banyak item yang direkomendasikan benar-benar relevan. Precision dihitung sebagai rasio antara jumlah prediksi positif yang benar dengan total prediksi positif yang dibuat oleh model.
+
+3. Recall
+- Recall mengukur seberapa banyak item yang relevan berhasil ditemukan oleh model dari seluruh item yang seharusnya direkomendasikan.
+
+4. Loss Function (Binary Crossentropy)
+- Model menggunakan binary crossentropy sebagai fungsi loss karena sistem rekomendasi ini mengubah nilai popularity menjadi kategori biner (populer atau tidak populer). Loss function ini mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar.
 
 # Hasil Evaluasi
-- Model dilatih selama 100 epoch menggunakan Adam Optimizer dengan learning rate sebesar 0.001. Performa model selama pelatihan dianalisis melalui kurva metrik RMSE pada data pelatihan dan validasi.
-- Binary Crossentropy Loss selama pelatihan menunjukkan tren penurunan, yang mengindikasikan bahwa model mampu mempelajari pola preferensi pengguna terhadap lagu dengan baik.
-- RMSE juga menunjukkan tren penurunan, yang berarti prediksi model semakin akurat seiring bertambahnya epoch.
-- Pada akhir pelatihan, RMSE pada data validasi relatif stabil dan tidak mengalami peningkatan signifikan, menandakan bahwa model tidak mengalami overfitting.
-- Visualisasi hasil pelatihan ditampilkan melalui grafik RMSE terhadap epoch, yang menunjukkan perbedaan performa model pada data pelatihan dan validasi. Kurva yang stabil dan menurun menandakan bahwa model telah mencapai konvergensi.
+
+1. Akurasi Model
+- Dari hasil training, akurasi model pada data pelatihan mencapai 80.48%, sedangkan akurasi pada data validasi (test set) adalah 79.67%. Ini menunjukkan bahwa model mampu mengklasifikasikan popularitas lagu dengan cukup baik, meskipun masih ada ruang untuk peningkatan.
+
+2. Precision (Presisi)
+- Precision model adalah 0.6076, yang berarti dari semua lagu yang diprediksi populer, sekitar 60.76% benar-benar populer. Nilai ini menunjukkan bahwa model memiliki tingkat kesalahan tertentu dalam mengidentifikasi lagu populer, sehingga masih ada prediksi positif yang salah (false positives).
+
+3. Recall (Daya Ingat/Sensitivitas)
+- Recall model adalah 0.6517, yang berarti dari semua lagu yang sebenarnya populer, model berhasil mengidentifikasi 65.17% dengan benar. Ini menunjukkan bahwa model cukup baik dalam menangkap lagu-lagu yang memang populer, meskipun masih ada beberapa lagu populer yang tidak terdeteksi dengan benar (false negatives).
+
+4. Visualisasi Loss
+- Training Loss menurun seiring bertambahnya epoch, yang menunjukkan bahwa model semakin baik dalam mempelajari pola dari data pelatihan.
+- Validation Loss juga menurun hingga titik tertentu, tetapi kemudian mulai sedikit berfluktuasi, yang bisa menjadi indikasi bahwa model mulai mengalami overfitting setelah beberapa epoch.
+- Dari grafik, terlihat bahwa loss cenderung stabil setelah epoch ke-17, menunjukkan bahwa model mencapai titik keseimbangan dalam belajar dari data.
 
 
 
-![Screenshot 2025-03-03 170745](https://github.com/user-attachments/assets/e38b06b8-a27b-4f72-a0ed-c8086e3bcb95)
+
+
+![Screenshot 2025-03-09 013529](https://github.com/user-attachments/assets/35134494-db30-4d4a-b760-00762acd1d25)
+
+
+
+
+
+
+![Screenshot 2025-03-09 013536](https://github.com/user-attachments/assets/59f59e6d-478f-4d0f-9890-5f15d83dded0)
+
+
+
+
+
+
+![Screenshot 2025-03-09 011856](https://github.com/user-attachments/assets/40cb2f65-cf8a-4a98-bfc1-d14a16d99f6f)
+
+
 
 
 
