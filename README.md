@@ -151,6 +151,7 @@ Kolom genres yang awalnya berisi list diubah menjadi format yang lebih mudah dio
 # Analisis Dataset
 
 1. data.csv
+   
 Bentuk: 170.653 baris dan 19 kolom.
 
 Missing Values: Tidak ada missing value yang terdeteksi.
@@ -160,7 +161,13 @@ Outlier:
 
 
 
+
+
+
 ![Screenshot 2025-03-16 233832](https://github.com/user-attachments/assets/462d4d9f-7cab-451b-9773-826ea19296a7)
+
+
+
 
 
 
@@ -179,7 +186,12 @@ Pembersihan outlier:
 
 
 
+
+
 ![Screenshot 2025-03-16 233913](https://github.com/user-attachments/assets/9b677b1b-8d4a-475b-91b2-631de24ea44d)
+
+
+
 
 
 
@@ -193,6 +205,7 @@ Pembersihan outlier:
   - Kotak (box) dalam box plot kini lebih proporsional dan mencerminkan persebaran mayoritas data dengan lebih baik.
 
 2. data_by_artist.csv
+   
 Bentuk: 28.680 baris dan 15 kolom.
 
 Missing Values: Tidak ada missing value yang terdeteksi.
@@ -203,7 +216,13 @@ Outlier:
 
 
 
+
+
+
 ![Screenshot 2025-03-16 234227](https://github.com/user-attachments/assets/7f3fffdf-dc20-45e5-932e-19e46d72e9b0)
+
+
+
 
 
 
@@ -221,7 +240,13 @@ Pembersihan outlier:
 
 
 
+
+
+
 ![Screenshot 2025-03-16 234415](https://github.com/user-attachments/assets/ab8a8146-a238-4df3-b2d4-80554aa625ab)
+
+
+
 
 
 
@@ -236,6 +261,7 @@ Pembersihan outlier:
   - Setelah pembersihan, rentang lebih terkonsentrasi sehingga analisis bisa lebih akurat tanpa dipengaruhi nilai ekstrem.
 
 3. data_by_genres.csv
+   
 Bentuk: 2.973 baris dan 14 kolom.
 
 Missing Values: Tidak ada missing value yang terdeteksi.
@@ -246,7 +272,16 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
+
+
+
+
 ![Screenshot 2025-03-16 234601](https://github.com/user-attachments/assets/c1936d93-fadd-4107-8aec-cc051809b393)
+
+
+
+
+
 
 
 
@@ -261,12 +296,22 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
+
+
+
+
+
 4. data_by_year.csv
+   
 Bentuk: 100 baris dan 14 kolom.
 
 Missing Values: Tidak ada missing value yang terdeteksi.
 
 Outlier: Tidak ada outlier yang terdeteksi.
+
+
+
+
 
 
 
@@ -283,7 +328,12 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
+
+
+
+
 5. data_w_genres.csv
+   
 Bentuk: 28.680 baris dan 16 kolom.
 
 Missing Values: Tidak ada missing value yang terdeteksi.
@@ -294,7 +344,15 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
+
+
+
+
+
 ![Screenshot 2025-03-16 234907](https://github.com/user-attachments/assets/0b2ef1a8-0727-44f7-9354-a1c0e024ef58)
+
+
+
 
 
 
@@ -370,7 +428,12 @@ Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine simi
 
 
 
+
+
 ![Screenshot 2025-03-17 001118](https://github.com/user-attachments/assets/76daea11-f850-4b89-bf2b-b77d14259489)
+
+
+
 
 
 
@@ -385,7 +448,14 @@ Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine simi
 
 
 
+
+
+
 ![Screenshot 2025-03-17 001125](https://github.com/user-attachments/assets/03101330-ef32-4aeb-80cf-b1d079094e42)
+
+
+
+
 
 
 
@@ -417,7 +487,14 @@ Output:
 
 
 
+
+
+
 ![Screenshot 2025-03-17 001404](https://github.com/user-attachments/assets/13dc95b5-9ccb-4820-a86c-68504f0c7df3)
+
+
+
+
 
 
 
@@ -431,7 +508,13 @@ Output:
 
 
 
+
+
+
 ![Screenshot 2025-03-17 001410](https://github.com/user-attachments/assets/d2dcb86b-fd26-4873-88cf-c75792e0cb4f)
+
+
+
 
 
 
@@ -466,7 +549,13 @@ Pendekatan ini menggunakan fitur valence dan energy untuk merekomendasikan lagu 
 
 
 
+
+
+
 ![Screenshot 2025-03-17 001638](https://github.com/user-attachments/assets/6ee51f41-dd0b-4523-87d7-043dcc550128)
+
+
+
 
 
 
@@ -482,7 +571,15 @@ Pendekatan ini menggunakan fitur valence dan energy untuk merekomendasikan lagu 
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 001647](https://github.com/user-attachments/assets/71cec673-8d8a-4428-84f4-810d15e71c44)
+
+
+
+
 
 
 
@@ -517,7 +614,16 @@ Pendekatan ini dirancang untuk memberikan rekomendasi awal kepada pengguna baru 
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 001925](https://github.com/user-attachments/assets/d2958af3-256d-4fdb-915a-1b4616d5e22f)
+
+
+
+
+
 
 
 
@@ -532,7 +638,19 @@ Pendekatan ini dirancang untuk memberikan rekomendasi awal kepada pengguna baru 
 
 
 
+
+
+
+
+
 ![Screenshot 2025-03-17 002007](https://github.com/user-attachments/assets/6fcec955-11fd-4b6c-8853-0aa0619f213a)
+
+
+
+
+
+
+
 
 
 
@@ -568,7 +686,18 @@ Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine simi
 
 
 
+
+
+
+
+
 ![Screenshot 2025-03-17 002349](https://github.com/user-attachments/assets/00822ae4-ff94-49f6-9b04-d5e2e30da1ca)
+
+
+
+
+
+
 
 
 
@@ -586,7 +715,16 @@ Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine simi
 
 
 
+
+
+
+
+
 ![Screenshot 2025-03-17 002355](https://github.com/user-attachments/assets/6a824385-fd7f-47a6-9104-7bc0cc1c4870)
+
+
+
+
 
 
 
@@ -624,7 +762,16 @@ Pendekatan ini menggabungkan beberapa fitur musik seperti acousticness, danceabi
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 002557](https://github.com/user-attachments/assets/7310cc2e-e33f-48d3-bd82-b727fb45f400)
+
+
+
+
+
 
 
 
@@ -640,7 +787,17 @@ Pendekatan ini menggabungkan beberapa fitur musik seperti acousticness, danceabi
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 002603](https://github.com/user-attachments/assets/7b22a652-dd42-46bc-894c-7a4f648eef9a)
+
+
+
+
+
+
 
 
 
@@ -678,6 +835,10 @@ Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi r
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 002754](https://github.com/user-attachments/assets/6ac5193b-5e09-4209-98d8-9678f86632d5)
 
 
@@ -687,7 +848,15 @@ Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi r
 
 
 
+
+
+
+
 ![Screenshot 2025-03-17 002800](https://github.com/user-attachments/assets/e22057e1-4888-40a8-be1d-6f650cefe407)
+
+
+
+
 
 
 
@@ -769,7 +938,13 @@ Untuk meningkatkan performa model, beberapa langkah yang dapat dipertimbangkan a
 
 
 
+
+
+
 ![Screenshot 2025-03-17 003747](https://github.com/user-attachments/assets/5e1b1edb-260d-4c7f-88d1-b03c9b360601)
+
+
+
 
 
 
@@ -791,7 +966,14 @@ Untuk meningkatkan performa model, beberapa langkah yang dapat dipertimbangkan a
 
 
 
+
+
+
 ![Screenshot 2025-03-17 003831](https://github.com/user-attachments/assets/fdc4c2ca-4b77-44d1-89b3-d102e502455e)
+
+
+
+
 
 
 
