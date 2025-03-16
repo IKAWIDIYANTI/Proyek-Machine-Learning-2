@@ -23,57 +23,79 @@ https://santika.upnjatim.ac.id/submissions/index.php/santika/article/view/201/96
 
 # Problem Statement
 
-- Pernyataan Masalah 1:
-  Dalam industri musik digital, pengguna sering mengalami kesulitan dalam menemukan lagu-lagu baru yang sesuai dengan preferensi mereka. Ketidakmampuan sistem untuk menyajikan rekomendasi yang relevan dapat mengurangi kepuasan pengguna dan menghambat eksplorasi musik baru.
-
-- Pernyataan Masalah 2:
-  Kurangnya rekomendasi yang dipersonalisasi dapat menyebabkan keterlibatan pengguna terhadap platform musik menurun. Tanpa sistem rekomendasi yang efektif, pengguna mungkin kesulitan menemukan lagu-lagu yang sesuai dengan selera mereka, yang berpotensi mengurangi durasi penggunaan aplikasi.
-
-- Pernyataan Masalah 3:
-  Sebagian besar platform musik mengandalkan data eksplisit seperti rating atau likes untuk menghasilkan rekomendasi. Namun, tidak semua pengguna secara aktif memberikan rating atau menandai lagu favorit mereka, sehingga diperlukan metode alternatif untuk menyusun rekomendasi yang akurat tanpa bergantung pada data eksplisit tersebut.
-
+- Pernyataan Masalah 1: Pengguna kesulitan menemukan lagu baru yang memiliki karakteristik musik mirip dengan lagu yang telah mereka dengarkan.
+- Pernyataan Masalah 2: Pengguna ingin mendapatkan rekomendasi lagu berdasarkan genre favorit mereka, tetapi rekomendasi yang ada kurang sesuai.
+- Pernyataan Masalah 3: Pengguna ingin mendengarkan lagu dari artis yang serupa atau memiliki gaya musik yang mirip dengan artis favorit mereka.
+- Pernyataan Masalah 4: Pengguna kesulitan menemukan lagu yang sesuai dengan mood atau emosi yang sedang mereka rasakan.
+- Pernyataan Masalah 5: Rekomendasi lagu yang ada kurang akurat karena tidak menggabungkan berbagai fitur musik (seperti tempo, energi, instrumentalness, dll.) secara optimal.
+- Pernyataan Masalah 6: Pengguna baru (new users) kesulitan mendapatkan rekomendasi yang relevan karena belum memiliki riwayat mendengarkan lagu (cold start problem).
+- Pernyataan Masalah 7: Pengguna ingin mendapatkan rekomendasi lagu yang menggabungkan preferensi artis dan genre secara bersamaan.
+- 
 # Goals
 
-- Jawaban Pernyataan Masalah 1:
-  Mengembangkan sistem rekomendasi lagu yang dapat secara otomatis menyesuaikan dengan preferensi pengguna, baik berdasarkan artis favorit maupun genre musik yang sering didengarkan.
-
-- Jawaban Pernyataan Masalah 2:
-  Meningkatkan engagement pengguna dengan platform musik melalui pengalaman yang lebih personal dan interaktif dalam menemukan lagu-lagu baru yang relevan.
-
-- Jawaban Pernyataan Masalah 3:
-  Menerapkan pendekatan berbasis embedding untuk menghasilkan rekomendasi lagu yang relevan meskipun tidak tersedia data rating eksplisit dari pengguna.
-
+- Jawaban Pernyataan Masalah 1: Memberikan rekomendasi lagu berdasarkan kesamaan fitur musik (seperti tempo, nada, energi, dll.) dengan lagu yang telah didengarkan pengguna.
+- Jawaban Pernyataan Masalah 2: Memberikan rekomendasi lagu berdasarkan genre yang sering didengarkan oleh pengguna.
+- Jawaban Pernyataan Masalah 3: Menyajikan lagu dari artis yang serupa atau memiliki gaya musik mirip dengan artis favorit pengguna.
+- Jawaban Pernyataan Masalah 4: Mengelompokkan lagu berdasarkan mood atau emosi (seperti senang, sedih, santai) dan memberikan rekomendasi sesuai suasana hati pengguna.
+- Jawaban Pernyataan Masalah 5: Menggabungkan berbagai fitur musik (seperti tempo, energi, instrumentalness, dll.) untuk menghasilkan rekomendasi yang lebih akurat dan personal.
+- Jawaban Pernyataan Masalah 6: Memberikan rekomendasi awal yang relevan untuk pengguna baru (cold start problem) berdasarkan lagu-lagu populer atau tren terkini.
+- Jawaban Pernyataan Masalah 7: Memberikan rekomendasi lagu yang menggabungkan preferensi artis dan genre secara bersamaan untuk memenuhi selera pengguna.
+  
 # Solution Approach
 
   Untuk mencapai tujuan tersebut, sistem rekomendasi lagu akan dikembangkan dengan beberapa pendekatan berikut:
 
-1. Rekomendasi Berdasarkan Artis:
-- Mengidentifikasi lagu-lagu dari artis yang sama dengan lagu yang sedang didengarkan oleh pengguna.
-- Menggunakan informasi artis dari dataset untuk memberikan rekomendasi yang lebih relevan.
+1. Content-Based Filtering (Kesamaan Fitur Musik):
 
-2. Rekomendasi Berdasarkan Kesamaan Judul Lagu:
-- Menerapkan teknik TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengukur kesamaan antarjudul lagu.
-- Menghitung cosine similarity antara judul lagu untuk memberikan rekomendasi yang lebih kontekstual.
-  
-3. Rekomendasi Berdasarkan Model Embedding:
-- Menggunakan model RecommenderNet untuk menghasilkan embedding lagu dan mengidentifikasi keterkaitan antar lagu.
-- Menghasilkan daftar 10 lagu teratas yang paling relevan untuk direkomendasikan kepada pengguna berdasarkan pola keterkaitan dalam dataset lagu.
+- Pendekatan: Menggunakan fitur-fitur musik seperti tempo, nada, energi, dan instrumentalness untuk menemukan lagu-lagu yang mirip dengan lagu favorit pengguna.
+- Implementasi: Membangun model yang menganalisis fitur-fitur musik dari lagu yang telah didengarkan pengguna dan mencari lagu-lagu lain dengan fitur yang serupa.
+- Keuntungan: Rekomendasi yang dihasilkan sangat personal dan sesuai dengan preferensi musik pengguna.
+
+2. Genre-Based Recommendation:
+
+- Pendekatan: Memberikan rekomendasi berdasarkan genre yang sering didengarkan oleh pengguna.
+- Implementasi: Menganalisis riwayat genre yang sering diputar oleh pengguna dan merekomendasikan lagu-lagu dari genre yang sama.
+- Keuntungan: Memudahkan pengguna menemukan lagu baru dalam genre favorit mereka.
+
+3. Artist-Based Recommendation:
+
+- Pendekatan: Menyajikan lagu dari artis yang serupa atau memiliki gaya musik mirip dengan artis favorit pengguna.
+- Implementasi: Menggunakan data tentang artis favorit pengguna dan mencari artis lain dengan karakteristik musik yang mirip.
+- Keuntungan: Memperkenalkan pengguna pada artis baru yang sesuai dengan selera mereka.
+
+4. Mood-Based Recommendation:
+
+- Pendekatan: Mengelompokkan lagu berdasarkan suasana hati dan emosi (seperti senang, sedih, santai) dan memberikan rekomendasi sesuai mood pengguna.
+- Implementasi: Menggunakan analisis audio (seperti tempo, energi) dan lirik lagu untuk mengidentifikasi mood, lalu merekomendasikan lagu dengan mood yang sesuai.
+- Keuntungan: Meningkatkan engagement pengguna dengan rekomendasi yang sesuai dengan emosi mereka.
+
+5. Hybrid Recommendation (Kombinasi Fitur Musik):
+
+- Pendekatan: Menggabungkan berbagai fitur musik (seperti tempo, energi, instrumentalness, dll.) untuk menghasilkan rekomendasi yang lebih akurat.
+- Implementasi: Membangun model yang mempertimbangkan kombinasi fitur musik untuk memberikan rekomendasi yang lebih personal.
+- Keuntungan: Rekomendasi yang dihasilkan lebih akurat dan sesuai dengan preferensi pengguna.
+
+6. Cold Start Problem Solution:
+
+- Pendekatan: Memberikan rekomendasi awal untuk pengguna baru berdasarkan lagu-lagu populer atau tren terkini.
+- Implementasi: Menggunakan data popularitas lagu dan tren musik untuk memberikan rekomendasi awal yang relevan.
+- Keuntungan: Mengatasi masalah cold start dengan memberikan rekomendasi yang masih relevan meskipun pengguna belum memiliki riwayat mendengarkan lagu.
+
+7. Artist and Genre Combination Recommendation:
+
+- Pendekatan: Menggunakan kombinasi artis dan genre untuk menemukan lagu yang sesuai dengan selera pengguna.
+- Implementasi: Menganalisis artis dan genre favorit pengguna, lalu mencari lagu-lagu yang menggabungkan kedua elemen tersebut.
+- Keuntungan: Memberikan rekomendasi yang lebih spesifik dan sesuai dengan preferensi pengguna.
+
 
 # Evaluation Metrics
 
   Untuk mengukur kinerja sistem rekomendasi, digunakan beberapa metrik evaluasi berikut:
 
-1. Accuracy
-- Model dievaluasi berdasarkan akurasi prediksi terhadap data uji. Akurasi mengukur seberapa banyak prediksi yang benar dibandingkan dengan total prediksi yang dibuat.
-
-2. Precision
-- Precision digunakan untuk mengukur seberapa banyak item yang direkomendasikan benar-benar relevan. Precision dihitung sebagai rasio antara jumlah prediksi positif yang benar dengan total prediksi positif yang dibuat oleh model.
-
-3. Recall
-- Recall mengukur seberapa banyak item yang relevan berhasil ditemukan oleh model dari seluruh item yang seharusnya direkomendasikan.
-
-4. Loss Function (Binary Crossentropy)
-- Model menggunakan binary crossentropy sebagai fungsi loss karena sistem rekomendasi ini mengubah nilai popularity menjadi kategori biner (populer atau tidak populer). Loss function ini mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar.
+- Accuracy: Mengukur seberapa akurat model dalam memprediksi lagu yang sesuai dengan preferensi pengguna.
+- Precision: Mengukur seberapa banyak lagu yang direkomendasikan benar-benar relevan dengan preferensi pengguna.
+- Recall: Mengukur seberapa banyak lagu yang relevan berhasil ditemukan oleh model dari seluruh lagu yang seharusnya direkomendasikan.
+- Loss Function (Binary Crossentropy): Mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar, terutama dalam mengkategorikan lagu sebagai populer atau tidak populer.
 
 # Data Understanding
 
@@ -83,104 +105,54 @@ https://www.kaggle.com/datasets/vatsalmavani/spotify-dataset
 
 Dataset ini berisi informasi tentang lagu, artis, genre, dan berbagai fitur musik yang dapat digunakan untuk berbagai keperluan analisis, termasuk rekomendasi musik dan analisis tren industri musik. Dataset ini berasal dari tahun 2022 dan tidak memiliki lisensi yang diketahui.
 
-# Struktur Dataset
+# Variabel atau Fitur pada Dataset
 
-Dataset terdiri dari beberapa file, masing-masing berisi jenis informasi yang berbeda:
+Berikut adalah penjelasan mengenai variabel atau fitur yang terdapat dalam dataset:
 
-1. data.csv
-- Berisi informasi tingkat lagu, termasuk metadata dan atribut musik seperti tempo, energy, danceability, dan acousticness.
-- Berguna untuk rekomendasi lagu berdasarkan kesamaan fitur musik.
-
-2. data_by_artist.csv
-- Data yang diagregasi berdasarkan artis.
-- Cocok untuk merekomendasikan artis serupa berdasarkan karakteristik musik mereka.
-
-3. data_by_genres.csv
-- Berisi data lagu yang dikelompokkan berdasarkan genre.
-- Berguna untuk analisis spesifik genre tetapi tidak langsung untuk rekomendasi lagu atau artis.
-
-4. data_by_year.csv
-- Menyediakan informasi tentang tren musik berdasarkan tahun.
-- Berguna untuk menganalisis perubahan preferensi atau karakteristik musik dari waktu ke waktu.
-
-5. data_w_genres.csv
-- Menghubungkan lagu dengan genre spesifik.
-- Memungkinkan eksplorasi distribusi genre dalam koleksi lagu.
-
-# Variabel Utama dalam Dataset
-
-Dataset mencakup variabel-variabel utama berikut:
-
-- track_name: Nama lagu.
-- artist_name: Nama artis yang membawakan lagu.
-- genre: Genre lagu.
+- valence: Mengukur seberapa positif atau negatif suasana lagu. Nilai mendekati 1 menunjukkan suasana yang positif, sedangkan nilai mendekati 0 menunjukkan suasana yang negatif.
 - year: Tahun rilis lagu.
-- tempo: Kecepatan lagu dalam ketukan per menit (BPM).
-- energy: Tingkat energi lagu, berkisar antara 0 hingga 1.
-- danceability: Indikator seberapa cocok lagu untuk menari, berkisar antara 0 hingga 1.
-- acousticness: Indikator seberapa akustik lagu tersebut, berkisar antara 0 hingga 1.
-- popularity: Skor popularitas lagu di Spotify.
+- acousticness: Mengukur seberapa akustik sebuah lagu. Nilai mendekati 1 menunjukkan lagu yang sangat akustik.
+- artists: Daftar artis yang terlibat dalam lagu.
+- danceability: Mengukur seberapa mudah sebuah lagu dapat digunakan untuk menari. Nilai mendekati 1 menunjukkan lagu yang sangat mudah untuk menari.
+- duration_ms: Durasi lagu dalam milidetik.
+- energy: Mengukur intensitas dan aktivitas lagu. Nilai mendekati 1 menunjukkan lagu yang sangat energetik.
+- explicit: Menunjukkan apakah lagu mengandung lirik eksplisit (1) atau tidak (0).
+- id: ID unik untuk setiap lagu.
+- instrumentalness: Mengukur seberapa instrumental sebuah lagu. Nilai mendekati 1 menunjukkan lagu yang sangat instrumental.
+- key: Key atau nada dasar lagu dalam notasi musik.
+- liveness: Mengukur keberadaan penonton dalam rekaman. Nilai mendekati 1 menunjukkan lagu yang direkam langsung.
+- loudness: Mengukur kenyaringan lagu dalam desibel (dB).
+- mode: Menunjukkan mode lagu, yaitu mayor (1) atau minor (0).
+- name: Nama lagu.
+- popularity: Popularitas lagu berdasarkan skala 0 hingga 100.
+- release_date: Tanggal rilis lagu.
+- speechiness: Mengukur keberadaan kata-kata yang diucapkan dalam lagu. Nilai mendekati 1 menunjukkan lagu yang lebih banyak berbicara.
+- tempo: Tempo lagu dalam beats per minute (BPM).
 
-# Analisis Dataset
+# Proses Data Understanding
 
-1. data.csv
-- Bentuk: 170.653 baris dan 19 kolom.
-- Missing Values: Tidak ada missing value yang terdeteksi.
-- Duplikat: Tidak ada duplikat yang terdeteksi.
-- Outlier: Tidak diperiksa secara eksplisit, tetapi analisis lebih lanjut mungkin diperlukan.
-- Insight Utama:
-  1. Lagu unik: 170.653.
-  2. Lagu paling populer: "Dakiti" dengan skor popularitas 100.
-  3. Contoh lagu: "Piano Concerto No. 3 in D Minor, Op. 30: III. Finale. Alla breve".
+- Statistik Deskriptif: Dilakukan analisis statistik deskriptif untuk memahami distribusi data, seperti mean, median, standar deviasi, dan range untuk setiap fitur.
+- Visualisasi Data: Menggunakan box plot untuk mengidentifikasi outlier dalam fitur seperti duration_ms dan loudness. Box plot membantu dalam memahami sebaran data dan mendeteksi nilai-nilai ekstrem yang mungkin mempengaruhi analisis.
+- Pembersihan Outlier: Outlier diidentifikasi menggunakan metode Interquartile Range (IQR) dan dihapus untuk memastikan data lebih representatif. Misalnya, outlier pada fitur duration_ms dihapus untuk memastikan durasi lagu berada dalam rentang yang wajar.
 
-2. data_by_artist.csv
-- Bentuk: 28.680 baris dan 14 kolom.
-- Missing Values: Tidak ada missing value yang terdeteksi.
-- Duplikat: Tidak ada duplikat yang terdeteksi.
-- Insight Utama:
-  1. Artis unik: 28.680.
+# Penanganan Data Hilang:
 
-3. data_by_genres.csv
-- Bentuk: 2.973 baris dan 14 kolom.
-- Missing Values: Tidak ada missing value yang terdeteksi.
-- Duplikat: Tidak ada duplikat yang terdeteksi.
-- Insight Utama:
-  1. Genre unik: 2.973.
-  2. Contoh genre: "21st century classical", "432hz", "8-bit".
+Kolom release_date diubah menjadi format datetime, dan nilai yang tidak valid diubah menjadi NaT (Not a Time). Hal ini memastikan konsistensi dalam analisis temporal.
 
-4. data_by_year.csv
-- Bentuk: 100 baris dan 14 kolom.
-- Missing Values: Tidak ada missing value yang terdeteksi.
-- Duplikat: Tidak ada duplikat yang terdeteksi.
-- Insight Utama:
-  1. Mencakup 100 tahun tren musik.
+# Transformasi Data:
 
-5. data_w_genres.csv
-- Bentuk: 28.680 baris dan 14 kolom.
-- Missing Values: Tidak ada missing value yang terdeteksi.
-- Duplikat: Tidak ada duplikat yang terdeteksi.
-- Insight Utama:
-  1. Artis unik dengan genre: 28.680.
-  2. Genre unik: 10.743.
+- Beberapa kolom seperti duration_ms diubah menjadi duration_s (durasi dalam detik) untuk memudahkan interpretasi.
+- Nilai popularity dipastikan berada dalam rentang 0 hingga 100 dengan menggunakan metode clipping.
 
-# Analisis Gabungan Dataset
+# Analisis Variabel Kategorikal:
 
-- Total Lagu Unik: 213.048 (berdasarkan ID unik).
-- Total Artis/Genre Unik: 65.741.
-- Dataset yang Digabungkan: Menggabungkan semua dataset tidak menghasilkan missing value, menunjukkan data yang bersih dan konsisten.
+Kolom genres yang awalnya berisi list diubah menjadi format yang lebih mudah diolah. Jika list kosong, diisi dengan nilai ['unknown'].
 
-# Deskripsi Fitur
+# Insight dari Proses Data Understanding
 
-Dataset mencakup fitur-fitur berikut:
-
-1. Fitur Numerik:
-- valence, acousticness, danceability, energy, instrumentalness, liveness, loudness, speechiness, tempo, popularity.
-
-2. Fitur Kategorikal:
-- track_name, artist_name, genre, id, release_date.
-
-3. Fitur Temporal:
-- year.
+- Distribusi Data: Sebagian besar fitur seperti acousticness, danceability, dan energy memiliki distribusi yang bervariasi, dengan beberapa fitur seperti loudness menunjukkan adanya outlier yang signifikan.
+- Outlier: Outlier pada fitur seperti duration_ms dan loudness menunjukkan adanya lagu dengan durasi sangat panjang atau kenyaringan yang sangat rendah. Pembersihan outlier membantu dalam membuat analisis lebih akurat.
+- Popularitas: Popularitas lagu bervariasi dari 0 hingga 100, dengan beberapa lagu memiliki popularitas yang sangat rendah atau sangat tinggi.
 
 
 # Data Preparation
