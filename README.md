@@ -148,72 +148,291 @@ Kolom release_date diubah menjadi format datetime, dan nilai yang tidak valid di
 
 Kolom genres yang awalnya berisi list diubah menjadi format yang lebih mudah diolah. Jika list kosong, diisi dengan nilai ['unknown'].
 
-# Insight dari Proses Data Understanding
+# Analisis Dataset
 
-- Distribusi Data: Sebagian besar fitur seperti acousticness, danceability, dan energy memiliki distribusi yang bervariasi, dengan beberapa fitur seperti loudness menunjukkan adanya outlier yang signifikan.
-- Outlier: Outlier pada fitur seperti duration_ms dan loudness menunjukkan adanya lagu dengan durasi sangat panjang atau kenyaringan yang sangat rendah. Pembersihan outlier membantu dalam membuat analisis lebih akurat.
-- Popularitas: Popularitas lagu bervariasi dari 0 hingga 100, dengan beberapa lagu memiliki popularitas yang sangat rendah atau sangat tinggi.
+1. data.csv
+Bentuk: 170.653 baris dan 19 kolom.
+
+Missing Values: Tidak ada missing value yang terdeteksi.
+
+Outlier: 
+
+
+
+
+![Screenshot 2025-03-16 233832](https://github.com/user-attachments/assets/462d4d9f-7cab-451b-9773-826ea19296a7)
+
+
+
+
+
+- Sebaran Data Tidak Normal
+  - Box plot menunjukkan distribusi yang sangat tidak simetris, dengan banyak outliers ke arah kanan (nilai duration_ms yang sangat tinggi).
+- Outliers yang Signifikan
+  - Outliers terlihat sangat banyak dan tersebar jauh dari batas atas, yang menunjukkan adanya nilai ekstrim di dataset.
+- Kemungkinan Data Skewed ke Kanan
+  - Sebagian besar data tampaknya berada di kisaran nilai kecil, sementara ada beberapa data dengan nilai duration_ms yang jauh lebih besar. Ini mengindikasikan distribusi skewed positif (right-skewed).
+
+Pembersihan outlier:
+
+
+
+
+
+![Screenshot 2025-03-16 233913](https://github.com/user-attachments/assets/9b677b1b-8d4a-475b-91b2-631de24ea44d)
+
+
+
+
+
+- Distribusi Data Lebih Normal
+  - Setelah pembersihan, box plot menunjukkan distribusi yang lebih simetris dibandingkan sebelumnya. Tidak ada outliers ekstrem yang mengganggu.
+- Rentang Data Lebih Terkontrol
+  - Whisker pada box plot sekarang lebih pendek, yang menunjukkan bahwa semua nilai berada dalam rentang yang wajar tanpa adanya nilai ekstrem.
+- Interquartile Range (IQR) Lebih Representatif
+  - Kotak (box) dalam box plot kini lebih proporsional dan mencerminkan persebaran mayoritas data dengan lebih baik.
+
+2. data_by_artist.csv
+Bentuk: 28.680 baris dan 15 kolom.
+
+Missing Values: Tidak ada missing value yang terdeteksi.
+
+Outlier:
+
+
+
+
+
+![Screenshot 2025-03-16 234227](https://github.com/user-attachments/assets/7f3fffdf-dc20-45e5-932e-19e46d72e9b0)
+
+
+
+
+
+
+- Banyak Outliers di Sisi Kiri (Nilai Negatif Ekstrem)
+  - Box plot menunjukkan banyak titik outlier (lingkaran kecil) di sisi kiri, yang berarti ada banyak lagu dengan nilai "loudness" yang sangat rendah.
+- Distribusi Cenderung Condong ke Kiri
+  - Sebagian besar data berada di rentang antara -30 hingga -25 dB, tetapi masih ada nilai jauh lebih kecil (di bawah -55 dB), yang dianggap sebagai outliers.
+
+Pembersihan outlier:
+
+
+
+
+
+![Screenshot 2025-03-16 234415](https://github.com/user-attachments/assets/ab8a8146-a238-4df3-b2d4-80554aa625ab)
+
+
+
+
+
+
+- Outliers Berhasil Dihilangkan
+  - Dibandingkan dengan box plot sebelumnya, sekarang tidak ada lagi titik outliers (lingkaran kecil) yang muncul di luar whiskers. Distribusi Loudness Lebih Stabil
+  - Data sekarang lebih terkonsentrasi di sekitar rentang -25 dB hingga 0 dB. Median terlihat lebih jelas berada di sekitar -10 dB.
+- Rentang Data Lebih Rapi dan Representatif
+  - Sebelum pembersihan, ada banyak nilai yang terlalu ekstrem di sisi negatif (di bawah -40 dB).
+  - Setelah pembersihan, rentang lebih terkonsentrasi sehingga analisis bisa lebih akurat tanpa dipengaruhi nilai ekstrem.
+
+3. data_by_genres.csv
+Bentuk: 2.973 baris dan 14 kolom.
+
+Missing Values: Tidak ada missing value yang terdeteksi.
+
+Outlier: Tidak ada outlier yang terdeteksi.
+
+
+
+
+
+![Screenshot 2025-03-16 234601](https://github.com/user-attachments/assets/c1936d93-fadd-4107-8aec-cc051809b393)
+
+
+
+
+
+
+![Screenshot 2025-03-16 234612](https://github.com/user-attachments/assets/cb697832-0769-471e-8521-c5c5f093ac41)
+
+
+
+
+
+
+
+4. data_by_year.csv
+Bentuk: 100 baris dan 14 kolom.
+
+Missing Values: Tidak ada missing value yang terdeteksi.
+
+Outlier: Tidak ada outlier yang terdeteksi.
+
+
+
+
+
+
+
+![Screenshot 2025-03-16 234747](https://github.com/user-attachments/assets/d3819041-ceb8-44b8-b9ce-59d2e1615e7a)
+
+
+
+
+
+
+
+
+5. data_w_genres.csv
+Bentuk: 28.680 baris dan 16 kolom.
+
+Missing Values: Tidak ada missing value yang terdeteksi.
+
+Outlier: Tidak ada outlier yang terdeteksi.
+
+
+
+
+
+![Screenshot 2025-03-16 234907](https://github.com/user-attachments/assets/0b2ef1a8-0727-44f7-9354-a1c0e024ef58)
+
+
+
+
+
+
 
 
 # Data Preparation
 
-Data preparation merupakan proses krusial dalam analisis data untuk memastikan kualitas data yang digunakan dalam model atau visualisasi. Berikut adalah tahapan lengkap yang dilakukan dalam proses ini:
+# Teknik Data Preparation yang Dilakukan
 
-1. Membaca Data
-- Dataset utama dibaca dari file CSV menggunakan pd.read_csv(), yang meliputi:
-- data.csv sebagai dataset utama yang berisi informasi lagu.
-- data_by_genres.csv sebagai dataset yang mengelompokkan lagu berdasarkan genre.
+1. Penggabungan Data (Merging)
 
-2. Menangani Missing Values
-- Data yang memiliki nilai kosong dihapus menggunakan data.dropna().
-- Penghapusan dilakukan untuk memastikan hanya data yang lengkap yang digunakan dalam analisis.
+- Proses: Melakukan penggabungan beberapa dataset menggunakan kunci tertentu seperti id dan artists. Dataset yang digabungkan meliputi features_music, cold_start, mood, genres, artists, dan artists_genres.
+- Alasan: Penggabungan data diperlukan untuk menyatukan informasi yang tersebar di berbagai dataset sehingga dapat digunakan untuk analisis dan rekomendasi yang lebih komprehensif. Misalnya, menggabungkan fitur musik dengan informasi genre dan artis memungkinkan sistem rekomendasi untuk mempertimbangkan lebih banyak faktor.
 
-3. Mengurutkan Data
-- Data diurutkan berdasarkan kolom id dalam urutan menaik menggunakan sort_values('id', ascending=True).
-- Hal ini dilakukan untuk menjaga struktur data yang lebih terorganisir.
+2. Pemeriksaan Missing Values
 
-4. Menghapus Duplikasi Data
-- Lagu dengan id yang sama dihapus menggunakan fix_songs.drop_duplicates('id').
-- Tujuan dari langkah ini adalah memastikan bahwa setiap lagu hanya muncul sekali dalam dataset.
+- Proses: Mengecek adanya missing values pada setiap kolom di dataset menggunakan fungsi isnull().sum().
+- Alasan: Missing values dapat mengganggu analisis dan menghasilkan rekomendasi yang tidak akurat. Pemeriksaan ini membantu mengidentifikasi kolom yang memerlukan penanganan lebih lanjut, seperti imputasi atau penghapusan.
 
-5. Mengganti Nama Genre yang Tidak Konsisten
-- Genre yang kurang spesifik atau tidak relevan disesuaikan menggunakan data_by_genres.replace('game', 'electronic').
-- Hal ini dilakukan agar penamaan genre dalam dataset lebih konsisten.
+3. Sorting Data
 
-6. Membuat DataFrame Baru
-- Data yang telah dibersihkan disusun ulang menjadi DataFrame baru yang hanya berisi kolom yang relevan:
-    1. id (ID lagu)
-    2. song_name (Nama lagu)
-    3. artists (Nama artis)
-- DataFrame ini dibuat menggunakan pd.DataFrame() dengan memastikan hanya lagu unik yang digunakan.
+- Proses: Mengurutkan data berdasarkan kolom tertentu seperti id atau artists menggunakan fungsi sort_values().
+- Alasan: Sorting memudahkan dalam melakukan pemeriksaan data, identifikasi duplikat, dan memastikan konsistensi data.
 
-7. Menggabungkan Data
-- Dataset data dan data_by_genres digabungkan berdasarkan kolom id menggunakan pd.merge().
-- Penggabungan ini dilakukan untuk mengaitkan informasi lagu dengan informasi genre.
+4. Pemeriksaan Duplikat
 
-8. Ekstraksi Fitur dengan TF-IDF
-- Ekstraksi fitur dengan TF-IDF (Term Frequency-Inverse Document Frequency) dilakukan untuk mengukur pentingnya sebuah kata (dalam hal ini, nama artis) dalam konteks dataset lagu. Proses ini dimulai dengan inisialisasi TfidfVectorizer dan fitting terhadap kolom artists.
-- Matriks TF-IDF kemudian dihasilkan dengan mentransformasikan data menggunakan tf.fit_transform(data['artists']).
-- Hasil matriks TF-IDF ditampilkan dalam bentuk DataFrame untuk memudahkan interpretasi.
+- Proses: Mengecek adanya data duplikat menggunakan fungsi duplicated().sum().
+- Alasan: Data duplikat dapat menyebabkan bias dalam analisis dan rekomendasi. Menghapus atau menggabungkan duplikat diperlukan untuk memastikan kualitas data.
+
+5. Transformasi Data
+
+- Proses: Mengubah format data pada kolom genres dari list menjadi string menggunakan fungsi apply() dan lambda.
+- Alasan: Transformasi ini memudahkan dalam pemrosesan dan analisis data, terutama ketika genre perlu dijadikan sebagai fitur dalam model rekomendasi.
+
+6. Pemeriksaan Unique Values
+
+- Proses: Menghitung jumlah nilai unik pada kolom tertentu seperti id menggunakan fungsi len() dan unique().
+- Alasan: Memastikan bahwa setiap entri memiliki identifikasi yang unik dan tidak ada duplikasi yang tersembunyi.
+
+7. Pembersihan Data
+
+- Proses: Menghapus atau menangani data yang tidak relevan, seperti genre yang mengandung nilai "unknown".
+- Alasan: Data yang tidak relevan dapat mengurangi akurasi model rekomendasi. Pembersihan data memastikan bahwa hanya data yang valid dan relevan yang digunakan.
+
+# Alasan Tahapan Data Preparation
+- Konsistensi Data: Memastikan data yang digunakan konsisten dan siap untuk diproses lebih lanjut.
+- Kualitas Data: Menghilangkan noise, missing values, dan duplikat yang dapat memengaruhi hasil analisis.
+- Integrasi Data: Menggabungkan informasi dari berbagai sumber untuk mendapatkan gambaran yang lebih lengkap.
+- Efisiensi Pemrosesan: Transformasi dan pembersihan data memudahkan dalam pembuatan model dan analisis.
+- Akurasi Rekomendasi: Data yang bersih dan terstruktur dengan baik akan menghasilkan rekomendasi yang lebih akurat dan relevan.
 
 
 # Modeling
 
-Sistem rekomendasi yang dikembangkan bertujuan untuk memberikan rekomendasi lagu berdasarkan kemiripan artis dan kesamaan fitur teks menggunakan metode berbasis konten (Content-Based Filtering). Dua pendekatan utama yang digunakan adalah rekomendasi berbasis artis dan rekomendasi berbasis kemiripan judul lagu menggunakan TF-IDF dan cosine similarity.
+Pada tahap ini, sistem rekomendasi dibangun dengan menggunakan beberapa pendekatan berbasis algoritma machine learning. Berikut adalah penjelasan mengenai model yang dikembangkan beserta output rekomendasi yang dihasilkan.
 
-1. Rekomendasi Berdasarkan Artis
+1. Rekomendasi Berdasarkan Kesamaan Fitur Musik
+   
+Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine similarity untuk merekomendasikan lagu berdasarkan kemiripan fitur musik seperti acousticness, danceability, energy, dan lainnya.
 
-Pendekatan ini mengasumsikan bahwa pengguna yang menyukai lagu dari seorang artis tertentu kemungkinan besar juga akan menyukai lagu-lagu lain dari artis yang sama. Model ini bekerja dengan cara:
+- Proses:
+  - Fitur musik distandardisasi menggunakan StandardScaler untuk memastikan semua fitur memiliki skala yang sama.
+  - Model NearestNeighbors dilatih pada data yang telah di-scale untuk mencari lagu-lagu dengan fitur yang paling mirip.
+  - Rekomendasi dihasilkan dengan mencari lagu-lagu terdekat berdasarkan kemiripan fitur.
 
-- Mengidentifikasi artis dari lagu yang diberikan sebagai input.
-- Mencari lagu-lagu lain yang dinyanyikan oleh artis yang sama.
-- Menyaring lagu agar tidak merekomendasikan lagu yang sama dengan input.
-- Menghasilkan Top-N rekomendasi berdasarkan hasil pencarian.
-- Berikut adalah hasil rekomendasi untuk lagu Rockin' Chair - Live:
-
+- Output:
 
 
-![Screenshot 2025-03-04 020607](https://github.com/user-attachments/assets/4a0a47f8-386d-45c9-ba5b-c47f644f90b6)
+
+
+
+
+![Screenshot 2025-03-17 001118](https://github.com/user-attachments/assets/76daea11-f850-4b89-bf2b-b77d14259489)
+
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 001125](https://github.com/user-attachments/assets/03101330-ef32-4aeb-80cf-b1d079094e42)
+
+
+
+
+
+
+- Kelebihan:
+  - Rekomendasi sangat personal karena didasarkan pada fitur musik yang spesifik.
+  - Cocok untuk pengguna yang memiliki preferensi kuat terhadap karakteristik musik tertentu.
+
+- Kekurangan:
+
+  - Membutuhkan data fitur musik yang lengkap dan akurat.
+  - Kurang efektif jika fitur musik tidak mencerminkan preferensi pengguna secara holistik.
+
+2. Rekomendasi Berdasarkan Genre
+   
+Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi representasi numerik, kemudian menghitung kemiripan antar artis menggunakan cosine similarity.
+
+- Proses:
+  - Data genre diubah menjadi vektor TF-IDF untuk menangkap pentingnya setiap genre dalam representasi artis.
+  - Model NearestNeighbors digunakan untuk mencari artis dengan genre yang paling mirip.
+  - Rekomendasi dihasilkan berdasarkan artis-artis dengan genre yang serupa.
+
+Output:
+
+
+
+
+
+
+![Screenshot 2025-03-17 001404](https://github.com/user-attachments/assets/13dc95b5-9ccb-4820-a86c-68504f0c7df3)
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 001410](https://github.com/user-attachments/assets/d2dcb86b-fd26-4873-88cf-c75792e0cb4f)
+
 
 
 
@@ -221,93 +440,362 @@ Pendekatan ini mengasumsikan bahwa pengguna yang menyukai lagu dari seorang arti
 
 
 - Kelebihan:
-1. Mudah diimplementasikan.
-2. Memberikan rekomendasi yang cukup relevan jika pengguna ingin menemukan lebih banyak lagu dari artis yang disukai.
+
+  - Rekomendasi berdasarkan genre cocok untuk pengguna yang menyukai artis dengan genre tertentu.
+  - Mudah diimplementasikan dan tidak memerlukan fitur musik yang kompleks.
 
 - Kekurangan:
-1. Tidak dapat merekomendasikan lagu dari artis lain yang memiliki gaya musik serupa.
-2. Keterbatasan dalam menangani variasi preferensi pengguna.
 
-2. Rekomendasi Berdasarkan Kemiripan Judul Lagu
+  - Kurang personal karena hanya mempertimbangkan genre, bukan karakteristik musik secara keseluruhan.
+  - Tidak efektif jika genre yang dimiliki artis terlalu umum atau kurang spesifik.
 
-Metode ini menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk mengubah teks dari judul lagu dan nama artis menjadi representasi numerik, kemudian menghitung kemiripan antara lagu menggunakan cosine similarity. Cara kerja metode ini:
+3. Rekomendasi Berdasarkan Mood atau Emosi
+   
+Pendekatan ini menggunakan fitur valence dan energy untuk merekomendasikan lagu dengan mood yang serupa.
 
-- Menggabungkan nama lagu dan artis sebagai representasi teks.
-- Menggunakan TF-IDF untuk mengubah teks menjadi vektor fitur.
-- Menghitung kemiripan kosinus antara lagu yang dicari dengan seluruh lagu dalam dataset.
-- Mengurutkan dan memilih Top-N lagu dengan skor kemiripan tertinggi.
-- Hasil rekomendasi untuk lagu Song for Zula:
+- Proses:
+
+  - Fitur mood distandardisasi menggunakan StandardScaler.
+  - Model NearestNeighbors digunakan untuk mencari lagu dengan mood yang paling mirip berdasarkan valence dan energy.
+  - Rekomendasi dihasilkan dengan mencari lagu-lagu terdekat dalam ruang fitur mood.
+
+- Output:
 
 
 
 
-![Screenshot 2025-03-04 020619](https://github.com/user-attachments/assets/21890856-76f9-49e1-bb15-a314dbea219a)
+
+
+![Screenshot 2025-03-17 001638](https://github.com/user-attachments/assets/6ee51f41-dd0b-4523-87d7-043dcc550128)
+
+
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 001647](https://github.com/user-attachments/assets/71cec673-8d8a-4428-84f4-810d15e71c44)
+
+
 
 
 
 
 
 - Kelebihan:
-1. Dapat merekomendasikan lagu dari artis yang berbeda tetapi memiliki kesamaan dalam judul lagu.
-2. Lebih fleksibel dibandingkan metode berbasis artis karena mempertimbangkan kesamaan teks.
+
+  - Cocok untuk pengguna yang mencari lagu berdasarkan suasana hati atau emosi.
+  - Mudah diinterpretasikan karena hanya menggunakan dua fitur utama (valence dan energy).
 
 - Kekurangan:
-1. Bisa menghasilkan rekomendasi yang tidak sepenuhnya relevan jika hanya berdasarkan kemiripan teks.
-2. Tidak memperhitungkan faktor lain seperti genre atau popularitas lagu.
+
+  - Terbatas pada dua fitur, sehingga kurang mencerminkan kompleksitas preferensi musik pengguna.
+  - Kurang efektif jika preferensi pengguna tidak sepenuhnya bergantung pada mood.
+
+4. Rekomendasi untuk Pengguna Baru (Cold Start Problem)
+
+Pendekatan ini dirancang untuk memberikan rekomendasi awal kepada pengguna baru yang belum memiliki riwayat preferensi.
+
+- Proses:
+
+  - Rekomendasi diberikan berdasarkan popularitas lagu.
+  - Lagu-lagu dengan skor popularitas tertinggi direkomendasikan kepada pengguna baru.
+
+- Output:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 001925](https://github.com/user-attachments/assets/d2958af3-256d-4fdb-915a-1b4616d5e22f)
+
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002007](https://github.com/user-attachments/assets/6fcec955-11fd-4b6c-8853-0aa0619f213a)
+
+
+
+
+
+
+
+- Kelebihan:
+
+  - Solusi sederhana dan efektif untuk masalah cold start.
+  - Tidak memerlukan data historis pengguna.
+
+- Kekurangan:
+
+  - Rekomendasi kurang personal karena hanya berdasarkan popularitas.
+  - Tidak mempertimbangkan preferensi spesifik pengguna.
+
+5. Rekomendasi Berdasarkan Artis
+   
+Pendekatan ini menggunakan algoritma Nearest Neighbors dengan metrik cosine similarity untuk merekomendasikan artis-artis yang mirip berdasarkan fitur musik seperti acousticness, danceability, energy, dan valence.
+
+- Proses:
+
+  - Fitur musik distandardisasi menggunakan StandardScaler.
+  - Model NearestNeighbors dilatih pada data yang telah di-scale untuk mencari artis-artis dengan fitur musik yang paling mirip.
+  - Rekomendasi dihasilkan dengan mencari artis-artis terdekat berdasarkan kemiripan fitur.
+
+- Output:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002349](https://github.com/user-attachments/assets/00822ae4-ff94-49f6-9b04-d5e2e30da1ca)
+
+
+
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002355](https://github.com/user-attachments/assets/6a824385-fd7f-47a6-9104-7bc0cc1c4870)
+
+
+
+
+
+
+
+
+- Kelebihan:
+
+  - Rekomendasi sangat personal karena didasarkan pada fitur musik yang spesifik.
+  - Cocok untuk pengguna yang memiliki preferensi kuat terhadap karakteristik musik tertentu.
+
+- Kekurangan:
+
+  - Membutuhkan data fitur musik yang lengkap dan akurat.
+  - Kurang efektif jika fitur musik tidak mencerminkan preferensi pengguna secara holistik.
+
+6. Rekomendasi Berdasarkan Kombinasi Fitur Musik
+
+Pendekatan ini menggabungkan beberapa fitur musik seperti acousticness, danceability, energy, instrumentalness, liveness, loudness, speechiness, tempo, dan valence untuk merekomendasikan lagu-lagu yang mirip.
+
+- Proses:
+
+  - Fitur musik distandardisasi menggunakan StandardScaler.
+  - Model NearestNeighbors dilatih pada data yang telah di-scale untuk mencari lagu-lagu dengan fitur yang paling mirip.
+  - Rekomendasi dihasilkan dengan mencari lagu-lagu terdekat berdasarkan kemiripan fitur.
+
+- Output:
+
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002557](https://github.com/user-attachments/assets/7310cc2e-e33f-48d3-bd82-b727fb45f400)
+
+
+
+
+
+
+
+- Hasil:
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002603](https://github.com/user-attachments/assets/7b22a652-dd42-46bc-894c-7a4f648eef9a)
+
+
+
+
+
+
+
+
+- Kelebihan:
+
+  - Rekomendasi sangat personal karena didasarkan pada kombinasi fitur musik yang kompleks.
+  - Cocok untuk pengguna yang memiliki preferensi kuat terhadap karakteristik musik tertentu.
+
+- Kekurangan:
+
+  - Membutuhkan data fitur musik yang lengkap dan akurat.
+  - Kurang efektif jika fitur musik tidak mencerminkan preferensi pengguna secara holistik.
+
+7. Rekomendasi Berdasarkan Kombinasi Artis dan Genre
+
+Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi representasi numerik, kemudian menghitung kemiripan antar artis menggunakan cosine similarity.
+
+- Proses:
+
+  - Data genre diubah menjadi vektor TF-IDF untuk menangkap pentingnya setiap genre dalam representasi artis.
+  - Model NearestNeighbors digunakan untuk mencari artis dengan genre yang paling mirip.
+  - Rekomendasi dihasilkan berdasarkan artis-artis dengan genre yang serupa.
+
+- Output:
+
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002754](https://github.com/user-attachments/assets/6ac5193b-5e09-4209-98d8-9678f86632d5)
+
+
+
+
+
+
+
+
+![Screenshot 2025-03-17 002800](https://github.com/user-attachments/assets/e22057e1-4888-40a8-be1d-6f650cefe407)
+
+
+
+
+
+
+
+
+
+- Kelebihan:
+
+  - Rekomendasi berdasarkan genre cocok untuk pengguna yang menyukai artis dengan genre tertentu.
+  - Mudah diimplementasikan dan tidak memerlukan fitur musik yang kompleks.
+
+- Kekurangan:
+
+  - Kurang personal karena hanya mempertimbangkan genre, bukan karakteristik musik secara keseluruhan.
+  - Tidak efektif jika genre yang dimiliki artis terlalu umum atau kurang spesifik.
+
 
 # Evaluation
 
-# Metrik Evaluasi
-
-  Untuk mengukur kinerja sistem rekomendasi, digunakan beberapa metrik evaluasi berikut:
+Pada bagian evaluasi ini, metrik yang digunakan adalah accuracy, precision, dan recall. Ketiga metrik ini dipilih karena sesuai dengan konteks masalah klasifikasi biner yang dihadapi, yaitu memprediksi apakah suatu lagu memiliki popularitas di atas 20 atau tidak. Berikut penjelasan mengenai metrik-metrik tersebut:
 
 1. Accuracy
-- Model dievaluasi berdasarkan akurasi prediksi terhadap data uji. Akurasi mengukur seberapa banyak prediksi yang benar dibandingkan dengan total prediksi yang dibuat.
+   
+Accuracy mengukur seberapa sering model melakukan prediksi yang benar secara keseluruhan. Accuracy cocok digunakan ketika dataset memiliki distribusi kelas yang seimbang. Namun, jika dataset tidak seimbang, metrik ini mungkin tidak mencerminkan performa model secara akurat.
 
-2. Precision
-- Precision digunakan untuk mengukur seberapa banyak item yang direkomendasikan benar-benar relevan. Precision dihitung sebagai rasio antara jumlah prediksi positif yang benar dengan total prediksi positif yang dibuat oleh model.
+3. Precision
+   
+Precision mengukur seberapa akurat model dalam memprediksi kelas positif. Precision penting ketika biaya dari false positives tinggi, misalnya dalam kasus deteksi spam atau penyakit.
 
-3. Recall
-- Recall mengukur seberapa banyak item yang relevan berhasil ditemukan oleh model dari seluruh item yang seharusnya direkomendasikan.
-
-4. Loss Function (Binary Crossentropy)
-- Model menggunakan binary crossentropy sebagai fungsi loss karena sistem rekomendasi ini mengubah nilai popularity menjadi kategori biner (populer atau tidak populer). Loss function ini mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar.
+5. Recall
+   
+Recall mengukur seberapa baik model dapat mengidentifikasi semua instance positif. Recall penting ketika biaya dari false negatives tinggi, misalnya dalam kasus deteksi penyakit atau fraud.
 
 # Hasil Evaluasi
 
-1. Akurasi Model
-- Dari hasil training, akurasi model pada data pelatihan mencapai 80.48%, sedangkan akurasi pada data validasi (test set) adalah 79.67%. Ini menunjukkan bahwa model mampu mengklasifikasikan popularitas lagu dengan cukup baik, meskipun masih ada ruang untuk peningkatan.
+Berdasarkan hasil evaluasi, model mencapai performa sebagai berikut:
 
-2. Precision (Presisi)
-- Precision model adalah 0.6076, yang berarti dari semua lagu yang diprediksi populer, sekitar 60.76% benar-benar populer. Nilai ini menunjukkan bahwa model memiliki tingkat kesalahan tertentu dalam mengidentifikasi lagu populer, sehingga masih ada prediksi positif yang salah (false positives).
+1. Accuracy: 0.8516
+   
+Model mampu melakukan prediksi yang benar pada 85.16% data testing. Nilai ini menunjukkan bahwa model memiliki performa yang cukup baik dalam mengklasifikasikan popularitas lagu.
 
-3. Recall (Daya Ingat/Sensitivitas)
-- Recall model adalah 0.6517, yang berarti dari semua lagu yang sebenarnya populer, model berhasil mengidentifikasi 65.17% dengan benar. Ini menunjukkan bahwa model cukup baik dalam menangkap lagu-lagu yang memang populer, meskipun masih ada beberapa lagu populer yang tidak terdeteksi dengan benar (false negatives).
+2. Precision: 0.8723
+   
+Nilai precision yang tinggi menunjukkan bahwa model memiliki tingkat kesalahan yang rendah dalam memprediksi lagu sebagai populer (kelas positif) ketika lagu tersebut sebenarnya tidak populer.
 
-4. Visualisasi Loss
-- Training Loss menurun seiring bertambahnya epoch, yang menunjukkan bahwa model semakin baik dalam mempelajari pola dari data pelatihan.
-- Validation Loss juga menurun hingga titik tertentu, tetapi kemudian mulai sedikit berfluktuasi, yang bisa menjadi indikasi bahwa model mulai mengalami overfitting setelah beberapa epoch.
-- Dari grafik, terlihat bahwa loss cenderung stabil setelah epoch ke-17, menunjukkan bahwa model mencapai titik keseimbangan dalam belajar dari data.
+3. Recall: 0.9156
+   
+Nilai recall yang tinggi menunjukkan bahwa model mampu mengidentifikasi sebagian besar lagu yang sebenarnya populer. Hal ini penting untuk memastikan bahwa model tidak melewatkan lagu-lagu yang seharusnya diklasifikasikan sebagai populer.
+
+# Analisis Hasil
+
+1. Accuracy vs. Validation Accuracy
+   
+Selama pelatihan, accuracy pada data training dan validation cenderung stabil dan meningkat secara bertahap. Hal ini menunjukkan bahwa model tidak mengalami overfitting, karena performa pada data training dan validation tidak memiliki perbedaan yang signifikan.
+
+2. Precision dan Recall
+   
+Nilai precision dan recall yang tinggi menunjukkan bahwa model memiliki kemampuan yang baik dalam memprediksi kelas positif (lagu populer). Namun, perlu diperhatikan bahwa recall yang lebih tinggi daripada precision menunjukkan bahwa model cenderung lebih agresif dalam memprediksi kelas positif, sehingga mungkin menghasilkan lebih banyak false positives.
+
+3. Kesimpulan Umum
+   
+Model yang dibangun telah mencapai performa yang memadai untuk masalah klasifikasi ini. Namun, jika tujuan proyek adalah untuk meminimalkan false positives (misalnya, menghindari rekomendasi lagu yang sebenarnya tidak populer), maka precision dapat dioptimalkan lebih lanjut. Sebaliknya, jika tujuan proyek adalah untuk memastikan bahwa tidak ada lagu populer yang terlewat, maka recall sudah berada pada tingkat yang baik.
+
+# Rekomendasi
+
+Untuk meningkatkan performa model, beberapa langkah yang dapat dipertimbangkan adalah:
+
+- Melakukan hyperparameter tuning untuk menemukan konfigurasi model yang lebih optimal.
+- Mengeksplorasi teknik data augmentation atau resampling jika dataset tidak seimbang.
+- Menggunakan metrik tambahan seperti F1-score untuk menyeimbangkan precision dan recall jika diperlukan.
+
+# Output
 
 
 
 
 
-![Screenshot 2025-03-09 013529](https://github.com/user-attachments/assets/35134494-db30-4d4a-b760-00762acd1d25)
+
+![Screenshot 2025-03-17 003747](https://github.com/user-attachments/assets/5e1b1edb-260d-4c7f-88d1-b03c9b360601)
 
 
 
 
 
 
-![Screenshot 2025-03-09 013536](https://github.com/user-attachments/assets/59f59e6d-478f-4d0f-9890-5f15d83dded0)
+
+
+
+
+
+![Screenshot 2025-03-17 003820](https://github.com/user-attachments/assets/844de821-d7ea-4136-a7b9-771cc56a29de)
 
 
 
 
 
 
-![Screenshot 2025-03-09 011856](https://github.com/user-attachments/assets/40cb2f65-cf8a-4a98-bfc1-d14a16d99f6f)
+
+
+
+![Screenshot 2025-03-17 003831](https://github.com/user-attachments/assets/fdc4c2ca-4b77-44d1-89b3-d102e502455e)
+
+
+
+
 
 
 
@@ -317,29 +805,71 @@ Metode ini menggunakan TF-IDF (Term Frequency-Inverse Document Frequency) untuk 
 
 # Dampak Model Terhadap Business Understanding
 
-Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman pengguna dengan memberikan rekomendasi lagu yang relevan. Evaluasi dilakukan untuk mengukur sejauh mana model ini menjawab permasalahan bisnis dan mencapai tujuan yang telah ditetapkan.
+Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman pengguna dengan memberikan rekomendasi lagu yang relevan berdasarkan berbagai preferensi dan kebutuhan pengguna. Berikut adalah evaluasi terhadap dampak model dalam menjawab problem statement dan mencapai goals yang telah ditetapkan:
 
 1. Apakah model telah menjawab setiap problem statement?
-- Model yang dikembangkan telah dirancang untuk memberikan rekomendasi lagu berdasarkan beberapa pendekatan, seperti:
-- Rekomendasi berdasarkan kesamaan artis
-- Rekomendasi berdasarkan kemiripan judul lagu
-- Rekomendasi berdasarkan kombinasi judul lagu dan artis
-- Dengan pendekatan ini, model telah mampu memberikan rekomendasi yang sesuai dengan preferensi pengguna, menjawab problem statement terkait pencarian lagu yang relevan dan meningkatkan pengalaman mendengarkan musik.
+   
+Model yang dikembangkan telah dirancang untuk menjawab setiap permasalahan yang diidentifikasi dalam problem statement. Berikut adalah penjelasannya:
+
+- Pernyataan Masalah 1: Pengguna kesulitan menemukan lagu baru yang memiliki karakteristik musik mirip dengan lagu yang telah mereka dengarkan.
+- Jawaban Model: Model menggunakan content-based filtering berdasarkan fitur musik seperti acousticness, danceability, energy, dan lainnya untuk merekomendasikan lagu dengan karakteristik yang mirip. Contohnya, fungsi song_recommendations menggunakan Nearest Neighbors dengan metrik cosine similarity untuk menemukan lagu-lagu serupa.
+  
+- Pernyataan Masalah 2: Pengguna ingin mendapatkan rekomendasi lagu berdasarkan genre favorit mereka.
+- Jawaban Model: Model menggunakan TF-IDF Vectorizer untuk menganalisis genre dan memberikan rekomendasi berdasarkan kemiripan genre. Contohnya, fungsi artist_recommendations merekomendasikan artis dengan genre yang mirip.
+
+- Pernyataan Masalah 3: Pengguna ingin mendengarkan lagu dari artis yang serupa atau memiliki gaya musik yang mirip dengan artis favorit mereka.
+- Jawaban Model: Model menggunakan artist-based recommendation dengan menganalisis kemiripan artis berdasarkan fitur musik atau genre. Contohnya, fungsi artist_recommendations memberikan rekomendasi artis dengan gaya musik yang mirip.
+
+- Pernyataan Masalah 4: Pengguna kesulitan menemukan lagu yang sesuai dengan mood atau emosi yang sedang mereka rasakan.
+- Jawaban Model: Model menggunakan mood-based recommendation dengan memanfaatkan fitur seperti valence dan energy untuk merekomendasikan lagu yang sesuai dengan suasana hati pengguna. Contohnya, fungsi song_recommendations berdasarkan mood menggunakan fitur valence dan energy.
+
+- Pernyataan Masalah 5: Rekomendasi lagu yang ada kurang akurat karena tidak menggabungkan berbagai fitur musik secara optimal.
+- Jawaban Model: Model menggabungkan berbagai fitur musik seperti tempo, loudness, instrumentalness, dan lainnya untuk menghasilkan rekomendasi yang lebih akurat. Contohnya, fungsi song_recommendations menggunakan kombinasi fitur musik untuk meningkatkan kualitas rekomendasi.
+
+- Pernyataan Masalah 6: Pengguna baru (new users) kesulitan mendapatkan rekomendasi yang relevan karena belum memiliki riwayat mendengarkan lagu (cold start problem).
+- Jawaban Model: Model mengatasi masalah cold start dengan memberikan rekomendasi berdasarkan lagu-lagu populer atau tren terkini. Contohnya, fungsi recommend_songs_for_new_user memberikan rekomendasi awal berdasarkan popularitas lagu.
+
+- Pernyataan Masalah 7: Pengguna ingin mendapatkan rekomendasi lagu yang menggabungkan preferensi artis dan genre secara bersamaan.
+- Jawaban Model: Model menggabungkan preferensi artis dan genre menggunakan hybrid recommendation. Contohnya, fungsi artist_recommendations dan song_recommendations dapat dikombinasikan untuk memberikan rekomendasi yang lebih spesifik.
 
 2. Apakah model berhasil mencapai setiap goals yang diharapkan?
-- Model telah mencapai tujuan utama, yaitu meningkatkan keterlibatan pengguna dengan menyediakan rekomendasi yang lebih personal dan relevan. Berdasarkan hasil prediksi, model mampu:
-- Memberikan rekomendasi yang bervariasi, mencakup berbagai genre dan artis.
-- Menghasilkan daftar lagu yang relevan dengan minat pengguna.
-- Menunjukkan fleksibilitas dalam metode rekomendasi, baik melalui model embedding maupun pendekatan berbasis TF-IDF dan cosine similarity.
-- Namun, terdapat beberapa area yang dapat ditingkatkan, seperti:
-    1. Penyesuaian bobot dalam model embedding untuk meningkatkan akurasi prediksi.
-    2. Penyempurnaan pre-processing data agar model dapat menangani berbagai format penulisan nama artis dengan lebih baik.
+   
+Model telah mencapai tujuan utama dengan memberikan rekomendasi yang relevan dan personal. Berikut adalah evaluasi terhadap setiap goal:
 
-3. Apakah setiap solusi statement yang direncanakan berdampak?
-- Model yang dikembangkan telah memberikan dampak positif dalam meningkatkan pengalaman pengguna dengan cara:
-- Mempercepat pencarian lagu yang sesuai dengan preferensi pengguna.
-- Meningkatkan eksplorasi musik dengan memberikan rekomendasi yang lebih luas dan beragam.
-- Mempermudah pengguna dalam menemukan lagu berdasarkan artis yang disukai.
-- Namun, terdapat beberapa kendala yang perlu diperhatikan:
-  1. Keakuratan rekomendasi masih dapat ditingkatkan dengan mempertimbangkan lebih banyak fitur dalam model.
-  2. Model perlu diuji lebih lanjut dengan dataset yang lebih besar untuk memastikan kinerja yang optimal dalam skala yang lebih luas.
+- Goal 1: Memberikan rekomendasi lagu berdasarkan kesamaan fitur musik.
+- Hasil: Model berhasil merekomendasikan lagu dengan fitur musik yang mirip, seperti yang terlihat pada fungsi song_recommendations yang menggunakan fitur acousticness, danceability, dan lainnya.
+
+- Goal 2: Memberikan rekomendasi lagu berdasarkan genre favorit pengguna.
+- Hasil: Model berhasil merekomendasikan lagu berdasarkan genre menggunakan TF-IDF Vectorizer dan cosine similarity, seperti yang terlihat pada fungsi artist_recommendations.
+
+- Goal 3: Menyajikan lagu dari artis yang serupa atau memiliki gaya musik mirip dengan artis favorit pengguna.
+- Hasil: Model berhasil merekomendasikan artis dengan gaya musik yang mirip, seperti yang terlihat pada fungsi artist_recommendations.
+
+- Goal 4: Mengelompokkan lagu berdasarkan mood atau emosi dan memberikan rekomendasi sesuai suasana hati pengguna.
+- Hasil: Model berhasil merekomendasikan lagu berdasarkan mood menggunakan fitur valence dan energy, seperti yang terlihat pada fungsi song_recommendations untuk mood-based recommendation.
+
+- Goal 5: Menggabungkan berbagai fitur musik untuk menghasilkan rekomendasi yang lebih akurat.
+- Hasil: Model berhasil menggabungkan fitur musik seperti tempo, loudness, dan instrumentalness untuk meningkatkan akurasi rekomendasi, seperti yang terlihat pada fungsi song_recommendations.
+
+- Goal 6: Memberikan rekomendasi awal yang relevan untuk pengguna baru (cold start problem).
+- Hasil: Model berhasil memberikan rekomendasi awal berdasarkan popularitas lagu, seperti yang terlihat pada fungsi recommend_songs_for_new_user.
+
+- Goal 7: Memberikan rekomendasi lagu yang menggabungkan preferensi artis dan genre secara bersamaan.
+- Hasil: Model berhasil menggabungkan preferensi artis dan genre untuk memberikan rekomendasi yang lebih spesifik, seperti yang terlihat pada fungsi artist_recommendations dan song_recommendations.
+
+3. pakah setiap solusi statement yang direncanakan berdampak?
+   
+Model yang dikembangkan telah memberikan dampak positif dalam meningkatkan pengalaman pengguna. Berikut adalah analisis dampaknya:
+
+- Dampak Positif:
+
+1. Meningkatkan Keterlibatan Pengguna: Rekomendasi yang personal dan relevan membuat pengguna lebih tertarik untuk mengeksplorasi lagu baru.
+2. Mempercepat Pencarian Lagu: Pengguna dapat menemukan lagu yang sesuai dengan preferensi mereka lebih cepat.
+3. Meningkatkan Eksplorasi Musik: Rekomendasi yang bervariasi memungkinkan pengguna menemukan genre dan artis baru yang sesuai dengan selera mereka.
+4. Mengatasi Cold Start Problem: Pengguna baru dapat langsung mendapatkan rekomendasi yang relevan meskipun belum memiliki riwayat mendengarkan lagu.
+
+- Area Perbaikan:
+
+1. Akurasi Rekomendasi: Meskipun model sudah memberikan rekomendasi yang relevan, akurasi dapat ditingkatkan dengan menambahkan lebih banyak fitur atau menggunakan algoritma yang lebih canggih.
+2. Penanganan Data: Pre-processing data perlu disempurnakan untuk menangani variasi penulisan nama artis atau genre.
+3. Skalabilitas: Model perlu diuji dengan dataset yang lebih besar untuk memastikan kinerja yang optimal dalam skala yang lebih luas.
