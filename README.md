@@ -90,12 +90,20 @@ https://santika.upnjatim.ac.id/submissions/index.php/santika/article/view/201/96
 
 # Evaluation Metrics
 
-  Untuk mengukur kinerja sistem rekomendasi, digunakan beberapa metrik evaluasi berikut:
+Untuk mengukur kualitas sistem rekomendasi berbasis content-based filtering, digunakan beberapa metrik evaluasi berbasis relevansi, yaitu:
 
-- Accuracy: Mengukur seberapa akurat model dalam memprediksi lagu yang sesuai dengan preferensi pengguna.
-- Precision: Mengukur seberapa banyak lagu yang direkomendasikan benar-benar relevan dengan preferensi pengguna.
-- Recall: Mengukur seberapa banyak lagu yang relevan berhasil ditemukan oleh model dari seluruh lagu yang seharusnya direkomendasikan.
-- Loss Function (Binary Crossentropy): Mengukur seberapa baik model dalam memprediksi probabilitas kelas yang benar, terutama dalam mengkategorikan lagu sebagai populer atau tidak populer.
+1. Precision@K
+  - Precision@K mengukur persentase item rekomendasi yang relevan dari total rekomendasi yang diberikan.
+  - Semakin tinggi Precision@K, semakin baik sistem dalam memberikan rekomendasi yang relevan.
+
+2. Recall@K
+  - Recall@K mengukur seberapa banyak item relevan yang berhasil direkomendasikan dibandingkan dengan semua item relevan yang tersedia.
+  - Jika Recall@K tinggi, artinya model dapat menangkap sebagian besar item yang seharusnya direkomendasikan.
+
+3. Coverage
+  - Coverage mengukur seberapa banyak lagu dalam dataset yang mendapatkan rekomendasi.
+  - Coverage dihitung sebagai rasio antara jumlah lagu yang berhasil diberikan.
+  - Jika coverage tinggi, berarti model dapat memberikan rekomendasi yang lebih luas dan tidak hanya berfokus pada lagu tertentu
 
 # Data Understanding
 
@@ -879,58 +887,43 @@ Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi r
 
 # Evaluation
 
-Pada bagian evaluasi ini, metrik yang digunakan adalah accuracy, precision, dan recall. Ketiga metrik ini dipilih karena sesuai dengan konteks masalah klasifikasi biner yang dihadapi, yaitu memprediksi apakah suatu lagu memiliki popularitas di atas 20 atau tidak. Berikut penjelasan mengenai metrik-metrik tersebut:
+# Metrik Evaluasi yang Digunakan
 
-1. Accuracy
-   
-Accuracy mengukur seberapa sering model melakukan prediksi yang benar secara keseluruhan. Accuracy cocok digunakan ketika dataset memiliki distribusi kelas yang seimbang. Namun, jika dataset tidak seimbang, metrik ini mungkin tidak mencerminkan performa model secara akurat.
+Dalam proyek ini, metrik evaluasi yang digunakan adalah:
 
-3. Precision
-   
-Precision mengukur seberapa akurat model dalam memprediksi kelas positif. Precision penting ketika biaya dari false positives tinggi, misalnya dalam kasus deteksi spam atau penyakit.
+1. Precision@K: Mengukur proporsi lagu yang direkomendasikan dan benar-benar relevan dalam daftar rekomendasi (Top-K). Jika precision@5 = 0, berarti tidak ada lagu relevan yang ditemukan dalam 5 rekomendasi teratas.
+2. Recall@K: Mengukur seberapa banyak lagu yang relevan dari total lagu relevan yang tersedia berhasil direkomendasikan. Jika recall@5 = 0, berarti rekomendasi gagal mencakup lagu relevan yang seharusnya bisa ditemukan.
+3. Coverage: Mengukur proporsi lagu yang dapat diberikan rekomendasi dalam dataset. Jika coverage = 0%, berarti model tidak dapat memberikan rekomendasi untuk lagu-lagu dalam dataset.
 
-5. Recall
-   
-Recall mengukur seberapa baik model dapat mengidentifikasi semua instance positif. Recall penting ketika biaya dari false negatives tinggi, misalnya dalam kasus deteksi penyakit atau fraud.
+# Interpretasi Hasil
 
-# Hasil Evaluasi
+1. Precision@5 = 0.0000 menunjukkan bahwa tidak ada lagu yang direkomendasikan yang sesuai dengan lagu relevan yang telah ditentukan dalam test cases.
+2. Recall@5 = 0.0000 menunjukkan bahwa model gagal merekomendasikan lagu-lagu yang sebenarnya relevan dalam daftar lagu yang diuji.
+3. Coverage = 0.00% berarti model gagal memberikan rekomendasi yang bermanfaat dalam cakupan dataset yang tersedia.
 
-Berdasarkan hasil evaluasi, model mencapai performa sebagai berikut:
+# Potensi Perbaikan
 
-1. Accuracy: 0.8516
-   
-Model mampu melakukan prediksi yang benar pada 85.16% data testing. Nilai ini menunjukkan bahwa model memiliki performa yang cukup baik dalam mengklasifikasikan popularitas lagu.
+Berdasarkan hasil evaluasi yang kurang memuaskan, beberapa langkah perbaikan yang bisa dilakukan adalah:
 
-2. Precision: 0.8723
-   
-Nilai precision yang tinggi menunjukkan bahwa model memiliki tingkat kesalahan yang rendah dalam memprediksi lagu sebagai populer (kelas positif) ketika lagu tersebut sebenarnya tidak populer.
+1. Memperbaiki Pemilihan Fitur
+  - Menggunakan lebih banyak fitur yang mencerminkan kesamaan antar lagu seperti genre, mood, atau metadata tambahan.
+2. Meningkatkan Representasi Similarity
+  - Menggunakan metode dimensionality reduction seperti PCA atau T-SNE untuk membantu memproyeksikan fitur ke ruang yang lebih bermakna bagi perhitungan kemiripan.
+  - Eksperimen dengan metrik jarak lain seperti Euclidean Distance, Manhattan Distance, atau Jaccard Similarity.
+3. Menggunakan Model Berbasis Deep Learning
+  - Implementasi Neural Collaborative Filtering (NCF) atau model berbasis Transformers bisa membantu menangkap pola yang lebih kompleks dalam data.
 
-3. Recall: 0.9156
-   
-Nilai recall yang tinggi menunjukkan bahwa model mampu mengidentifikasi sebagian besar lagu yang sebenarnya populer. Hal ini penting untuk memastikan bahwa model tidak melewatkan lagu-lagu yang seharusnya diklasifikasikan sebagai populer.
+# Visualisasi distribusi similarity untuk lagu pertama
 
-# Analisis Hasil
-
-1. Accuracy vs. Validation Accuracy
-   
-Selama pelatihan, accuracy pada data training dan validation cenderung stabil dan meningkat secara bertahap. Hal ini menunjukkan bahwa model tidak mengalami overfitting, karena performa pada data training dan validation tidak memiliki perbedaan yang signifikan.
-
-2. Precision dan Recall
-   
-Nilai precision dan recall yang tinggi menunjukkan bahwa model memiliki kemampuan yang baik dalam memprediksi kelas positif (lagu populer). Namun, perlu diperhatikan bahwa recall yang lebih tinggi daripada precision menunjukkan bahwa model cenderung lebih agresif dalam memprediksi kelas positif, sehingga mungkin menghasilkan lebih banyak false positives.
-
-3. Kesimpulan Umum
-   
-Model yang dibangun telah mencapai performa yang memadai untuk masalah klasifikasi ini. Namun, jika tujuan proyek adalah untuk meminimalkan false positives (misalnya, menghindari rekomendasi lagu yang sebenarnya tidak populer), maka precision dapat dioptimalkan lebih lanjut. Sebaliknya, jika tujuan proyek adalah untuk memastikan bahwa tidak ada lagu populer yang terlewat, maka recall sudah berada pada tingkat yang baik.
-
-# Rekomendasi
-
-Untuk meningkatkan performa model, beberapa langkah yang dapat dipertimbangkan adalah:
-
-- Melakukan hyperparameter tuning untuk menemukan konfigurasi model yang lebih optimal.
-- Mengeksplorasi teknik data augmentation atau resampling jika dataset tidak seimbang.
-- Menggunakan metrik tambahan seperti F1-score untuk menyeimbangkan precision dan recall jika diperlukan.
-
+1. Distribusi Sangat Miring ke Kanan:
+- Sebagian besar similarity score terkonsentrasi di rentang 0.99-1.00, menunjukkan bahwa lagu pertama memiliki banyak lagu lain dengan karakteristik audio yang hampir identik.
+- Ini tipikal untuk lagu dalam genre/artis yang sangat spesifik (contoh: musik klasik dengan fitur instrumentalness tinggi).
+2. Implikasi Rekomendasi:
+  - Sistem akan merekomendasikan lagu yang sangat mirip, berpotensi kurang beragam.
+  - Jika ingin variasi, perlu pertimbangkan fitur tambahan (misal: genre/tahun) atau atur threshold similarity.
+3. Peringatan:
+  - Score ~1.0 bisa mengindikasikan duplikat atau versi alternatif dari lagu yang sama. Perlu cek data lebih lanjut.
+  - 
 # Output
 
 
@@ -941,35 +934,12 @@ Untuk meningkatkan performa model, beberapa langkah yang dapat dipertimbangkan a
 
 
 
-![Screenshot 2025-03-17 003747](https://github.com/user-attachments/assets/5e1b1edb-260d-4c7f-88d1-b03c9b360601)
 
 
 
 
+![Screenshot 2025-03-25 095712](https://github.com/user-attachments/assets/4b028e50-d576-4733-a45c-07ea894373e9)
 
-
-
-
-
-
-
-
-
-
-![Screenshot 2025-03-17 003820](https://github.com/user-attachments/assets/844de821-d7ea-4136-a7b9-771cc56a29de)
-
-
-
-
-
-
-
-
-
-
-
-
-![Screenshot 2025-03-17 003831](https://github.com/user-attachments/assets/fdc4c2ca-4b77-44d1-89b3-d102e502455e)
 
 
 
