@@ -113,58 +113,22 @@ https://www.kaggle.com/datasets/vatsalmavani/spotify-dataset
 
 Dataset ini berisi informasi tentang lagu, artis, genre, dan berbagai fitur musik yang dapat digunakan untuk berbagai keperluan analisis, termasuk rekomendasi musik dan analisis tren industri musik. Dataset ini berasal dari tahun 2022 dan tidak memiliki lisensi yang diketahui.
 
-# Variabel atau Fitur pada Dataset
+Terdapat 5 file dataset yang saling terkait:
+1. data.csv (Data lagu utama)
+2. data_by_artist.csv (Agregasi data per artis)
+3. data_by_genres.csv (Agregasi data per genre)
+4. data_by_year.csv (Tren musik per tahun)
+5. data_w_genres.csv (Mapping artis-genre)
 
-Berikut adalah penjelasan mengenai variabel atau fitur yang terdapat dalam dataset:
-
-- valence: Mengukur seberapa positif atau negatif suasana lagu. Nilai mendekati 1 menunjukkan suasana yang positif, sedangkan nilai mendekati 0 menunjukkan suasana yang negatif.
-- year: Tahun rilis lagu.
-- acousticness: Mengukur seberapa akustik sebuah lagu. Nilai mendekati 1 menunjukkan lagu yang sangat akustik.
-- artists: Daftar artis yang terlibat dalam lagu.
-- danceability: Mengukur seberapa mudah sebuah lagu dapat digunakan untuk menari. Nilai mendekati 1 menunjukkan lagu yang sangat mudah untuk menari.
-- duration_ms: Durasi lagu dalam milidetik.
-- energy: Mengukur intensitas dan aktivitas lagu. Nilai mendekati 1 menunjukkan lagu yang sangat energetik.
-- explicit: Menunjukkan apakah lagu mengandung lirik eksplisit (1) atau tidak (0).
-- id: ID unik untuk setiap lagu.
-- instrumentalness: Mengukur seberapa instrumental sebuah lagu. Nilai mendekati 1 menunjukkan lagu yang sangat instrumental.
-- key: Key atau nada dasar lagu dalam notasi musik.
-- liveness: Mengukur keberadaan penonton dalam rekaman. Nilai mendekati 1 menunjukkan lagu yang direkam langsung.
-- loudness: Mengukur kenyaringan lagu dalam desibel (dB).
-- mode: Menunjukkan mode lagu, yaitu mayor (1) atau minor (0).
-- name: Nama lagu.
-- popularity: Popularitas lagu berdasarkan skala 0 hingga 100.
-- release_date: Tanggal rilis lagu.
-- speechiness: Mengukur keberadaan kata-kata yang diucapkan dalam lagu. Nilai mendekati 1 menunjukkan lagu yang lebih banyak berbicara.
-- tempo: Tempo lagu dalam beats per minute (BPM).
-
-# Proses Data Understanding
-
-- Statistik Deskriptif: Dilakukan analisis statistik deskriptif untuk memahami distribusi data, seperti mean, median, standar deviasi, dan range untuk setiap fitur.
-- Visualisasi Data: Menggunakan box plot untuk mengidentifikasi outlier dalam fitur seperti duration_ms dan loudness. Box plot membantu dalam memahami sebaran data dan mendeteksi nilai-nilai ekstrem yang mungkin mempengaruhi analisis.
-- Pembersihan Outlier: Outlier diidentifikasi menggunakan metode Interquartile Range (IQR) dan dihapus untuk memastikan data lebih representatif. Misalnya, outlier pada fitur duration_ms dihapus untuk memastikan durasi lagu berada dalam rentang yang wajar.
-
-# Penanganan Data Hilang:
-
-Kolom release_date diubah menjadi format datetime, dan nilai yang tidak valid diubah menjadi NaT (Not a Time). Hal ini memastikan konsistensi dalam analisis temporal.
-
-# Transformasi Data:
-
-- Beberapa kolom seperti duration_ms diubah menjadi duration_s (durasi dalam detik) untuk memudahkan interpretasi.
-- Nilai popularity dipastikan berada dalam rentang 0 hingga 100 dengan menggunakan metode clipping.
-
-# Analisis Variabel Kategorikal:
-
-Kolom genres yang awalnya berisi list diubah menjadi format yang lebih mudah diolah. Jika list kosong, diisi dengan nilai ['unknown'].
-
-# Analisis Dataset
-
-1. data.csv
+# Dataset Utama: data.csv
    
-Bentuk: 170.653 baris dan 19 kolom.
+1. Jumlah Baris & Kolom
+  - 170.653 baris (lagu) × 19 kolom
+2. Kondisi Data
+  - Tidak ada missing values pada kolom asli.
+  - release_date: Setelah konversi ke datetime, ditemukan 119.798 entri kosong (70%).
 
-Missing Values: Tidak ada missing value yang terdeteksi.
-
-Outlier: 
+3. Outlier: 
 
 
 
@@ -188,7 +152,7 @@ Outlier:
 - Kemungkinan Data Skewed ke Kanan
   - Sebagian besar data tampaknya berada di kisaran nilai kecil, sementara ada beberapa data dengan nilai duration_ms yang jauh lebih besar. Ini mengindikasikan distribusi skewed positif (right-skewed).
 
-Pembersihan outlier:
+4. Pembersihan outlier:
 
 
 
@@ -211,14 +175,55 @@ Pembersihan outlier:
   - Whisker pada box plot sekarang lebih pendek, yang menunjukkan bahwa semua nilai berada dalam rentang yang wajar tanpa adanya nilai ekstrem.
 - Interquartile Range (IQR) Lebih Representatif
   - Kotak (box) dalam box plot kini lebih proporsional dan mencerminkan persebaran mayoritas data dengan lebih baik.
+5. Uraian Fitur
 
-2. data_by_artist.csv
-   
-Bentuk: 28.680 baris dan 15 kolom.
 
-Missing Values: Tidak ada missing value yang terdeteksi.
 
-Outlier:
+
+
+
+
+
+
+
+
+
+![Screenshot 2025-04-02 120016](https://github.com/user-attachments/assets/80673c4b-a02f-4085-82cb-b5c2eebdb0cb)
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Screenshot 2025-04-02 120032](https://github.com/user-attachments/assets/ad2eb635-3adf-483b-900a-acc34eeac6c4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Agregasi per Artis: data_by_artist.csv
+1. Jumlah Baris & Kolom
+  - 28.680 baris (artis) × 15 kolom
+2. Kondisi Data
+  - Tidak ada missing values.
+3. Outlier:
 
 
 
@@ -242,7 +247,7 @@ Outlier:
 - Distribusi Cenderung Condong ke Kiri
   - Sebagian besar data berada di rentang antara -30 hingga -25 dB, tetapi masih ada nilai jauh lebih kecil (di bawah -55 dB), yang dianggap sebagai outliers.
 
-Pembersihan outlier:
+4. Pembersihan outlier:
 
 
 
@@ -267,14 +272,53 @@ Pembersihan outlier:
 - Rentang Data Lebih Rapi dan Representatif
   - Sebelum pembersihan, ada banyak nilai yang terlalu ekstrem di sisi negatif (di bawah -40 dB).
   - Setelah pembersihan, rentang lebih terkonsentrasi sehingga analisis bisa lebih akurat tanpa dipengaruhi nilai ekstrem.
+5. Uraian Fitur
 
-3. data_by_genres.csv
-   
-Bentuk: 2.973 baris dan 14 kolom.
 
-Missing Values: Tidak ada missing value yang terdeteksi.
 
-Outlier: Tidak ada outlier yang terdeteksi.
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Screenshot 2025-04-02 120331](https://github.com/user-attachments/assets/2fa8d74e-b975-4c6f-ae50-00d5564cc22f)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Agregasi per Genre: data_by_genres.csv
+1. Jumlah Baris & Kolom
+  - 2.973 baris (genre) × 14 kolom
+2. Kondisi Data
+  - Tidak ada missing values.
+3. Pembersihan:
+  - Genre kosong ([] atau "") diubah menjadi "Unknown".
+  - duration_ms dikonversi ke integer.
+4. Uraian Fitur
+  - Mirip dengan data_by_artist, tetapi diagregasi per genre (bukan per artis).
+5. Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
@@ -309,11 +353,18 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
-4. data_by_year.csv
-   
-Bentuk: 100 baris dan 14 kolom.
+# Tren Tahunan: data_by_year.csv
+1. Jumlah Baris & Kolom
+  - 100 baris (1921–2020) × 14 kolom
+2. Kondisi Data
+  - Tidak ada missing values atau outlier.
+3. Pembersihan:
+  - popularity dikonversi dari float ke integer.
+4. Uraian Fitur
 
-Missing Values: Tidak ada missing value yang terdeteksi.
+    Menunjukkan perubahan karakteristik musik dari tahun ke tahun, seperti:
+  - Rata-rata danceability, energy, tempo, dll.
+  - Tren popularitas musik per tahun.
 
 Outlier: Tidak ada outlier yang terdeteksi.
 
@@ -340,13 +391,16 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
-5. data_w_genres.csv
-   
-Bentuk: 28.680 baris dan 16 kolom.
-
-Missing Values: Tidak ada missing value yang terdeteksi.
-
-Outlier: Tidak ada outlier yang terdeteksi.
+# Mapping Artis-Genre: data_w_genres.csv
+1. Jumlah Baris & Kolom
+  - 28.680 baris × 16 kolom
+2. Kondisi Data
+  - Tidak ada missing values.
+3. Pembersihan:
+  - genres diubah dari string ke list.
+  - duration_ms diubah ke detik (duration_s).
+  - popularity dipotong ke 0–100.
+4. Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
@@ -368,6 +422,48 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 
 
+
+5. Uraian Fitur
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Screenshot 2025-04-02 120820](https://github.com/user-attachments/assets/6f171be0-33e5-404b-84fa-fd3826541a9d)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Kesimpulan
+1. Dataset ini lengkap untuk analisis musik berbasis audio features.
+2. Pembersihan dilakukan untuk:
+  - Menangani missing values (release_date).
+  - Menghilangkan outlier (duration_ms, loudness).
+  - Standarisasi format (genres, popularity).
+3. Analisis potensial:
+  - Tren musik dari waktu ke waktu.
+  - Hubungan antara fitur audio dan popularitas.
+  - Klasifikasi genre berdasarkan karakteristik lagu.
 
 # Data Preparation
 
@@ -887,44 +983,18 @@ Pendekatan ini menggunakan TF-IDF Vectorizer untuk mengubah data genre menjadi r
 
 # Evaluation
 
-# Metrik Evaluasi yang Digunakan
+Dalam proyek ini, menggunakan metrik evaluasi presisi (precision) untuk mengukur kualitas rekomendasi yang dihasilkan oleh berbagai sistem yang telah diimplementasikan. Presisi dipilih karena ingin memastikan bahwa rekomendasi yang diberikan benar-benar relevan dengan preferensi pengguna.
 
-Dalam proyek ini, metrik evaluasi yang digunakan adalah:
+# Metrik Evaluasi: Presisi (Precision)
+1. Relevansi ditentukan berdasarkan kriteria tertentu, seperti:
+  - Kesamaan fitur musik (untuk rekomendasi lagu) → Jika nilai cosine similarity > 0.7, dianggap relevan.
+  - Kesamaan genre (untuk rekomendasi artis) → Jika minimal 1 genre sama (untuk evaluasi dasar) atau 2 genre sama (untuk evaluasi berbasis TF-IDF).
+  - Kesamaan mood (untuk rekomendasi berdasarkan valence dan energy) → Jika nilai cosine similarity > 0.8.
+2. Cold Start menggunakan popularitas lagu sebagai asumsi bahwa lagu populer cenderung relevan bagi pengguna baru.
 
-1. Precision@K: Mengukur proporsi lagu yang direkomendasikan dan benar-benar relevan dalam daftar rekomendasi (Top-K). Jika precision@5 = 0, berarti tidak ada lagu relevan yang ditemukan dalam 5 rekomendasi teratas.
-2. Recall@K: Mengukur seberapa banyak lagu yang relevan dari total lagu relevan yang tersedia berhasil direkomendasikan. Jika recall@5 = 0, berarti rekomendasi gagal mencakup lagu relevan yang seharusnya bisa ditemukan.
-3. Coverage: Mengukur proporsi lagu yang dapat diberikan rekomendasi dalam dataset. Jika coverage = 0%, berarti model tidak dapat memberikan rekomendasi untuk lagu-lagu dalam dataset.
+# Hasil Evaluasi Sistem Rekomendasi
 
-# Interpretasi Hasil
-
-1. Precision@5 = 0.0000 menunjukkan bahwa tidak ada lagu yang direkomendasikan yang sesuai dengan lagu relevan yang telah ditentukan dalam test cases.
-2. Recall@5 = 0.0000 menunjukkan bahwa model gagal merekomendasikan lagu-lagu yang sebenarnya relevan dalam daftar lagu yang diuji.
-3. Coverage = 0.00% berarti model gagal memberikan rekomendasi yang bermanfaat dalam cakupan dataset yang tersedia.
-
-# Potensi Perbaikan
-
-Berdasarkan hasil evaluasi yang kurang memuaskan, beberapa langkah perbaikan yang bisa dilakukan adalah:
-
-1. Memperbaiki Pemilihan Fitur
-  - Menggunakan lebih banyak fitur yang mencerminkan kesamaan antar lagu seperti genre, mood, atau metadata tambahan.
-2. Meningkatkan Representasi Similarity
-  - Menggunakan metode dimensionality reduction seperti PCA atau T-SNE untuk membantu memproyeksikan fitur ke ruang yang lebih bermakna bagi perhitungan kemiripan.
-  - Eksperimen dengan metrik jarak lain seperti Euclidean Distance, Manhattan Distance, atau Jaccard Similarity.
-3. Menggunakan Model Berbasis Deep Learning
-  - Implementasi Neural Collaborative Filtering (NCF) atau model berbasis Transformers bisa membantu menangkap pola yang lebih kompleks dalam data.
-
-# Visualisasi distribusi similarity untuk lagu pertama
-
-1. Distribusi Sangat Miring ke Kanan:
-- Sebagian besar similarity score terkonsentrasi di rentang 0.99-1.00, menunjukkan bahwa lagu pertama memiliki banyak lagu lain dengan karakteristik audio yang hampir identik.
-- Ini tipikal untuk lagu dalam genre/artis yang sangat spesifik (contoh: musik klasik dengan fitur instrumentalness tinggi).
-2. Implikasi Rekomendasi:
-  - Sistem akan merekomendasikan lagu yang sangat mirip, berpotensi kurang beragam.
-  - Jika ingin variasi, perlu pertimbangkan fitur tambahan (misal: genre/tahun) atau atur threshold similarity.
-3. Peringatan:
-  - Score ~1.0 bisa mengindikasikan duplikat atau versi alternatif dari lagu yang sama. Perlu cek data lebih lanjut.
-  - 
-# Output
+Berikut ringkasan hasil evaluasi dari 7 sistem rekomendasi yang diuji:
 
 
 
@@ -938,7 +1008,8 @@ Berdasarkan hasil evaluasi yang kurang memuaskan, beberapa langkah perbaikan yan
 
 
 
-![Screenshot 2025-03-25 095712](https://github.com/user-attachments/assets/4b028e50-d576-4733-a45c-07ea894373e9)
+
+![Screenshot 2025-04-02 122050](https://github.com/user-attachments/assets/b49b4fab-8ee8-43f0-bb4e-164f7c62c2e8)
 
 
 
@@ -955,6 +1026,28 @@ Berdasarkan hasil evaluasi yang kurang memuaskan, beberapa langkah perbaikan yan
 
 
 
+# Rata-rata Presisi: 0.71
+# Analisis Hasil
+1. Sistem dengan Presisi Sempurna (1.00):
+  - Sistem yang berbasis fitur musik (lagu/artis) dan mood memberikan hasil sangat baik karena menggunakan cosine similarity untuk membandingkan vektor fitur.
+  - Cold Start juga dianggap sempurna karena menggunakan data popularitas yang umumnya diterima secara luas.
+2. Sistem dengan Presisi Rendah (0.00):
+  - Rekomendasi berbasis genre (baik dengan HashingVectorizer maupun TF-IDF) gagal memberikan rekomendasi yang relevan. Hal ini mungkin disebabkan oleh:
+    - Representasi genre yang terlalu sparse (banyak artis dengan genre unik).
+    - Kriteria relevansi (minimal 1 atau 2 genre sama) mungkin terlalu ketat untuk dataset ini.
+3. Rata-rata Presisi (0.71):
+  - Secara keseluruhan, sistem bekerja baik untuk rekomendasi berbasis fitur musik, tetapi perlu perbaikan untuk rekomendasi berbasis genre.
+
+# Rekomendasi Perbaikan
+1. Untuk Rekomendasi Genre:
+  - Gunakan weighted genre similarity (misalnya, genre utama diberi bobot lebih tinggi).
+  - Terapkan clustering genre sebelum rekomendasi untuk mengelompokkan artis dengan karakteristik serupa.
+2. Untuk Cold Start:
+  - Tambahkan filter berdasarkan region atau trending untuk personalisasi awal.
+3. Optimasi Threshold:
+  - Eksperimen dengan nilai threshold relevansi yang berbeda (misalnya, turunkan untuk genre).
+
+    
 # Dampak Model Terhadap Business Understanding
 
 Model rekomendasi lagu yang dikembangkan bertujuan untuk meningkatkan pengalaman pengguna dengan memberikan rekomendasi lagu yang relevan berdasarkan berbagai preferensi dan kebutuhan pengguna. Berikut adalah evaluasi terhadap dampak model dalam menjawab problem statement dan mencapai goals yang telah ditetapkan:
