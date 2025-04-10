@@ -467,50 +467,34 @@ Outlier: Tidak ada outlier yang terdeteksi.
 
 # Data Preparation
 
-# Teknik Data Preparation yang Dilakukan
+Tahapan-tahapan pemrosesan data yang dilakukan dalam proyek ini bertujuan untuk memastikan data siap digunakan dalam proses pembuatan sistem rekomendasi. Berikut tahapan yang dilakukan secara berurutan:
 
-1. Penggabungan Data (Merging)
+1. Penggabungan Dataset
 
-- Proses: Melakukan penggabungan beberapa dataset menggunakan kunci tertentu seperti id dan artists. Dataset yang digabungkan meliputi features_music, cold_start, mood, genres, artists, dan artists_genres.
-- Alasan: Penggabungan data diperlukan untuk menyatukan informasi yang tersebar di berbagai dataset sehingga dapat digunakan untuk analisis dan rekomendasi yang lebih komprehensif. Misalnya, menggabungkan fitur musik dengan informasi genre dan artis memungkinkan sistem rekomendasi untuk mempertimbangkan lebih banyak faktor.
+- Beberapa dataset seperti features_music, cold_start, mood, genres, artists, dan artists_genres digabungkan berdasarkan kunci utama seperti id dan artists.
+- Tujuan: Mengintegrasikan berbagai informasi dari dataset yang berbeda agar sistem rekomendasi dapat mempertimbangkan berbagai aspek seperti fitur musik, mood, genre, dan informasi artis.
 
-2. Pemeriksaan Missing Values
+2. Transformasi Kolom Genres
+- Kolom genres yang awalnya berupa list diubah menjadi string dengan metode apply() dan lambda.
+- Tujuan: Memudahkan proses analisis berbasis teks seperti TF-IDF dan vektorisasi genre.
 
-- Proses: Mengecek adanya missing values pada setiap kolom di dataset menggunakan fungsi isnull().sum().
-- Alasan: Missing values dapat mengganggu analisis dan menghasilkan rekomendasi yang tidak akurat. Pemeriksaan ini membantu mengidentifikasi kolom yang memerlukan penanganan lebih lanjut, seperti imputasi atau penghapusan.
+3. Pembersihan Data
+- Data dengan genre "unknown" dibersihkan dari dataset genres dan artists_genres.
+- Tujuan: Menghindari informasi yang tidak relevan yang dapat menurunkan kualitas model.
 
-3. Sorting Data
+4. Standardisasi Fitur Musik
+- Beberapa kolom numerik seperti acousticness, danceability, energy, valence, dan fitur musik lainnya distandarisasi menggunakan StandardScaler.
+- Tujuan: Menyamaratakan skala antar fitur agar hasil perhitungan jarak (cosine similarity atau Nearest Neighbors) lebih akurat.
 
-- Proses: Mengurutkan data berdasarkan kolom tertentu seperti id atau artists menggunakan fungsi sort_values().
-- Alasan: Sorting memudahkan dalam melakukan pemeriksaan data, identifikasi duplikat, dan memastikan konsistensi data.
+5. Standardisasi Fitur Mood
+- Fitur mood seperti valence dan energy juga distandarisasi.
+- Tujuan: Sama seperti sebelumnya, untuk menyamakan skala data sebelum digunakan dalam pemodelan Nearest Neighbors.
 
-4. Pemeriksaan Duplikat
-
-- Proses: Mengecek adanya data duplikat menggunakan fungsi duplicated().sum().
-- Alasan: Data duplikat dapat menyebabkan bias dalam analisis dan rekomendasi. Menghapus atau menggabungkan duplikat diperlukan untuk memastikan kualitas data.
-
-5. Transformasi Data
-
-- Proses: Mengubah format data pada kolom genres dari list menjadi string menggunakan fungsi apply() dan lambda.
-- Alasan: Transformasi ini memudahkan dalam pemrosesan dan analisis data, terutama ketika genre perlu dijadikan sebagai fitur dalam model rekomendasi.
-
-6. Pemeriksaan Unique Values
-
-- Proses: Menghitung jumlah nilai unik pada kolom tertentu seperti id menggunakan fungsi len() dan unique().
-- Alasan: Memastikan bahwa setiap entri memiliki identifikasi yang unik dan tidak ada duplikasi yang tersembunyi.
-
-7. Pembersihan Data
-
-- Proses: Menghapus atau menangani data yang tidak relevan, seperti genre yang mengandung nilai "unknown".
-- Alasan: Data yang tidak relevan dapat mengurangi akurasi model rekomendasi. Pembersihan data memastikan bahwa hanya data yang valid dan relevan yang digunakan.
-
-# Alasan Tahapan Data Preparation
-- Konsistensi Data: Memastikan data yang digunakan konsisten dan siap untuk diproses lebih lanjut.
-- Kualitas Data: Menghilangkan noise, missing values, dan duplikat yang dapat memengaruhi hasil analisis.
-- Integrasi Data: Menggabungkan informasi dari berbagai sumber untuk mendapatkan gambaran yang lebih lengkap.
-- Efisiensi Pemrosesan: Transformasi dan pembersihan data memudahkan dalam pembuatan model dan analisis.
-- Akurasi Rekomendasi: Data yang bersih dan terstruktur dengan baik akan menghasilkan rekomendasi yang lebih akurat dan relevan.
-
+6. Vektorisasi Teks dengan TF-IDF (atau Hashing Vectorizer)
+- Data pada kolom genres diubah menjadi vektor numerik menggunakan teknik vektorisasi teks.
+- Dalam implementasi ini digunakan HashingVectorizer untuk efisiensi memori, menggantikan TfidfVectorizer.
+- Tujuan: Mengubah data teks menjadi format numerik agar bisa digunakan untuk penghitungan kemiripan antar artis.
+  
 
 # Modeling
 
